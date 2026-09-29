@@ -23,8 +23,8 @@ export function Header() {
     <>
       {/* Top Announcement Bar */}
       <div className="bg-[#111] text-[#cfc7a7] text-[10px] uppercase tracking-[0.2em] py-1.5 px-4 text-center font-medium border-b border-white/10 flex justify-between items-center">
-        <span className="hidden sm:inline">WORLDWIDE EXPRESS SHIPPING • 100% QUALITY GUARANTEE</span>
-        <span className="mx-auto sm:mx-0">NEW 2026 MASTER COLLECTIONS AVAILABLE</span>
+        <span className="hidden sm:inline">BROOD ATELIER • CURATED LUXURY COLLECTION</span>
+        <span className="mx-auto sm:mx-0">NEW 2026 COLLECTIONS AVAILABLE</span>
         <button
           onClick={() => setIsCurrencyModalOpen(true)}
           className="text-white hover:text-[#cfc7a7] flex items-center gap-1 font-bold text-[10px]"
@@ -57,7 +57,7 @@ export function Header() {
         <div className="flex-1 flex justify-center">
           <Link href="/" className="block">
             <span className="font-serif text-xl sm:text-2xl font-bold tracking-[0.25em] text-[#d4af37] uppercase select-none">
-              THE HOSHI
+              BROOD
             </span>
           </Link>
         </div>
@@ -131,7 +131,7 @@ export function Header() {
         <div className="fixed inset-0 z-[9990] flex bg-black/70 backdrop-blur-sm animate-fadeIn">
           <div className="w-80 max-w-[85vw] bg-[#141414] text-white h-full flex flex-col shadow-2xl animate-slideRight">
             <div className="p-4 border-b border-white/10 flex justify-between items-center bg-black">
-              <span className="font-serif text-lg tracking-[0.2em] text-[#d4af37] font-bold">THE HOSHI</span>
+              <span className="font-serif text-lg tracking-[0.2em] text-[#d4af37] font-bold">BROOD</span>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="text-gray-400 hover:text-white text-xl font-bold p-1"
@@ -197,7 +197,7 @@ export function Header() {
                   rel="noreferrer"
                   className="flex items-center gap-2 text-green-400 hover:underline"
                 >
-                  <i className="fab fa-whatsapp"></i> WhatsApp VIP Concierge
+                  <i className="fab fa-whatsapp"></i> WhatsApp Concierge
                 </a>
                 <a
                   href="https://t.me"
@@ -211,7 +211,7 @@ export function Header() {
             </div>
 
             <div className="p-4 border-t border-white/10 bg-black text-center text-[10px] text-gray-500">
-              © 2026 THE HOSHI. ALL RIGHTS RESERVED.
+              © 2026 BROOD. ALL RIGHTS RESERVED.
             </div>
           </div>
           <div className="flex-1" onClick={() => setIsMobileMenuOpen(false)}></div>

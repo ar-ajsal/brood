@@ -58,6 +58,14 @@ export interface ShopifyProduct {
       node: ShopifyVariant;
     }>;
   };
+  metafields?: Array<ShopifyMetafield | null>;
+}
+
+export interface ShopifyMetafield {
+  key: string;
+  namespace: string;
+  value: string;
+  type: string;
 }
 
 export interface ShopifyPageInfo {
@@ -164,6 +172,159 @@ export function parseSortParam(sortParam?: string | null): {
   }
   return { activeSort: 'featured', sortKey: 'BEST_SELLING', reverse: false };
 }
+
+export interface PlannedCollectionConfig {
+  handle: string;
+  title: string;
+  subtitle: string;
+  category: string;
+  status: 'active' | 'upcoming';
+}
+
+export const CATALOG_COLLECTION_REGISTRY: Record<string, PlannedCollectionConfig> = {
+  men: {
+    handle: 'men',
+    title: "Men's Collection",
+    subtitle: 'Precision-crafted footwear, horology, and refined essentials tailored for men.',
+    category: 'Men',
+    status: 'active',
+  },
+  women: {
+    handle: 'women',
+    title: "Women's Collection",
+    subtitle: 'Contemporary luxury footwear, designer eyewear, and elegant accessories for women.',
+    category: 'Women',
+    status: 'active',
+  },
+  shoes: {
+    handle: 'shoes',
+    title: 'Shoes',
+    subtitle: 'Handcrafted luxury footwear designed for timeless elegance.',
+    category: 'Footwear',
+    status: 'active',
+  },
+  sneakers: {
+    handle: 'sneakers',
+    title: 'Sneakers',
+    subtitle: 'Contemporary luxury sneakers blending high fashion and daily comfort.',
+    category: 'Footwear',
+    status: 'active',
+  },
+  watches: {
+    handle: 'watches',
+    title: 'Watches',
+    subtitle: 'Precision-engineered luxury timepieces and horological craftsmanship.',
+    category: 'Watches',
+    status: 'active',
+  },
+  eyewear: {
+    handle: 'eyewear',
+    title: 'Eyewear',
+    subtitle: 'Designer sunglasses and optical frames with UV protection.',
+    category: 'Eyewear',
+    status: 'active',
+  },
+  sunglasses: {
+    handle: 'sunglasses',
+    title: 'Sunglasses',
+    subtitle: 'Curated luxury sunglasses with superior UV protection.',
+    category: 'Eyewear',
+    status: 'active',
+  },
+  bags: {
+    handle: 'bags',
+    title: 'Bags',
+    subtitle: 'Exclusive designer handbags, totes, and leather bags.',
+    category: 'Bags',
+    status: 'upcoming',
+  },
+  jewellery: {
+    handle: 'jewellery',
+    title: 'Jewellery',
+    subtitle: 'Refined precious jewellery and statement accessories.',
+    category: 'Jewellery',
+    status: 'upcoming',
+  },
+  accessories: {
+    handle: 'accessories',
+    title: 'Fashion Accessories',
+    subtitle: 'Curated luxury fashion accessories to complement your wardrobe.',
+    category: 'Accessories',
+    status: 'upcoming',
+  },
+  'leather-goods': {
+    handle: 'leather-goods',
+    title: 'Small Leather Goods',
+    subtitle: 'Artisanal leather wallets, cardholders, and fine accessories.',
+    category: 'Leather Goods',
+    status: 'upcoming',
+  },
+  lifestyle: {
+    handle: 'lifestyle',
+    title: 'Lifestyle Accessories',
+    subtitle: 'Distinctive luxury lifestyle pieces and design objects.',
+    category: 'Lifestyle',
+    status: 'upcoming',
+  },
+  'new-arrivals': {
+    handle: 'new-arrivals',
+    title: 'New Arrivals',
+    subtitle: 'Discover the latest luxury pieces freshly added to our collection.',
+    category: 'All',
+    status: 'active',
+  },
+  sale: {
+    handle: 'sale',
+    title: 'Sale',
+    subtitle: 'Limited-time privileges on select authentic luxury pieces.',
+    category: 'All',
+    status: 'active',
+  },
+};
+
+export interface CategorySpecAttribute {
+  name: string;
+  metafieldNamespace: string;
+  metafieldKey: string;
+  description: string;
+}
+
+export const CATEGORY_FACTUAL_ATTRIBUTES: Record<string, CategorySpecAttribute[]> = {
+  Footwear: [
+    { name: 'Size', metafieldNamespace: 'custom', metafieldKey: 'size', description: 'Standard sizing' },
+    { name: 'Color', metafieldNamespace: 'custom', metafieldKey: 'color', description: 'Primary and secondary colorway' },
+    { name: 'Material', metafieldNamespace: 'custom', metafieldKey: 'material', description: 'General composition' },
+    { name: 'Upper Material', metafieldNamespace: 'custom', metafieldKey: 'upper_material', description: 'Upper construction material' },
+    { name: 'Sole Material', metafieldNamespace: 'custom', metafieldKey: 'sole_material', description: 'Outsole/midsole material' },
+    { name: 'Toe Style', metafieldNamespace: 'custom', metafieldKey: 'toe_style', description: 'Toe profile' },
+    { name: 'Fit', metafieldNamespace: 'custom', metafieldKey: 'fit', description: 'Fit profile' },
+  ],
+  Eyewear: [
+    { name: 'Frame Color', metafieldNamespace: 'custom', metafieldKey: 'frame_color', description: 'Frame finish and color' },
+    { name: 'Lens Color', metafieldNamespace: 'custom', metafieldKey: 'lens_color', description: 'Lens tint and color' },
+    { name: 'Frame Material', metafieldNamespace: 'custom', metafieldKey: 'frame_material', description: 'Acetate, titanium, metal' },
+    { name: 'Lens Material', metafieldNamespace: 'custom', metafieldKey: 'lens_material', description: 'Glass, polycarbonate, CR-39' },
+    { name: 'Polarization', metafieldNamespace: 'custom', metafieldKey: 'polarization', description: 'Polarized lens technology' },
+  ],
+  Watches: [
+    { name: 'Movement', metafieldNamespace: 'custom', metafieldKey: 'movement', description: 'Automatic, quartz, manual wind' },
+    { name: 'Case Material', metafieldNamespace: 'custom', metafieldKey: 'case_material', description: 'Stainless steel, ceramic, titanium' },
+    { name: 'Strap Material', metafieldNamespace: 'custom', metafieldKey: 'strap_material', description: 'Leather, stainless steel, rubber' },
+    { name: 'Dial Color', metafieldNamespace: 'custom', metafieldKey: 'dial_color', description: 'Dial face color and finish' },
+    { name: 'Water Resistance', metafieldNamespace: 'custom', metafieldKey: 'water_resistance', description: 'Depth rating (e.g. 50m / 5ATM)' },
+  ],
+  Bags: [
+    { name: 'Material', metafieldNamespace: 'custom', metafieldKey: 'material', description: 'Calfskin, canvas, nylon' },
+    { name: 'Color', metafieldNamespace: 'custom', metafieldKey: 'color', description: 'Color finish' },
+    { name: 'Dimensions', metafieldNamespace: 'custom', metafieldKey: 'dimensions', description: 'Height, width, depth' },
+    { name: 'Closure', metafieldNamespace: 'custom', metafieldKey: 'closure', description: 'Zipper, magnetic snap, clasp' },
+  ],
+  Jewellery: [
+    { name: 'Material', metafieldNamespace: 'custom', metafieldKey: 'material', description: '18k Gold, Sterling Silver, Platinum' },
+    { name: 'Color', metafieldNamespace: 'custom', metafieldKey: 'color', description: 'Metal color tone' },
+    { name: 'Stone Type', metafieldNamespace: 'custom', metafieldKey: 'stone_type', description: 'Diamond, gemstone, cubic zirconia' },
+  ],
+};
 
 export function renderSortOptions(activeSort = 'featured'): string {
   return SORT_OPTIONS.map(
@@ -404,6 +565,33 @@ export const PRODUCT_BY_HANDLE_QUERY = `
             }
           }
         }
+      }
+      metafields(identifiers: [
+        { namespace: "custom", key: "material" },
+        { namespace: "custom", key: "color" },
+        { namespace: "custom", key: "upper_material" },
+        { namespace: "custom", key: "sole_material" },
+        { namespace: "custom", key: "toe_style" },
+        { namespace: "custom", key: "fit" },
+        { namespace: "custom", key: "frame_color" },
+        { namespace: "custom", key: "lens_color" },
+        { namespace: "custom", key: "frame_material" },
+        { namespace: "custom", key: "lens_material" },
+        { namespace: "custom", key: "polarization" },
+        { namespace: "custom", key: "movement" },
+        { namespace: "custom", key: "case_material" },
+        { namespace: "custom", key: "strap_material" },
+        { namespace: "custom", key: "dial_color" },
+        { namespace: "custom", key: "water_resistance" },
+        { namespace: "custom", key: "dimensions" },
+        { namespace: "custom", key: "closure" },
+        { namespace: "custom", key: "stone_type" },
+        { namespace: "shopify", key: "color-pattern" }
+      ]) {
+        key
+        namespace
+        value
+        type
       }
     }
   }
@@ -1040,7 +1228,7 @@ export function renderTemplateProductCard(product: ShopifyProduct): string {
 }
 
 /**
- * Render single product card for shop and collection listing.
+ * Render single Prestige Allure-inspired product card for shop, collection, search, and PDP recommendations.
  * Grid responsive breakdown:
  * - Desktop: 4 columns (col-md-3, col-lg-3)
  * - Tablet: 3 columns (col-sm-4)
@@ -1050,85 +1238,200 @@ export function renderShopProductCard(product: ShopifyProduct): string {
   const minPrice = product.priceRange.minVariantPrice;
   const comparePrice = product.compareAtPriceRange?.minVariantPrice;
   const formattedPrice = formatPrice(minPrice.amount, minPrice.currencyCode);
-  const formattedComparePrice =
-    comparePrice && parseFloat(comparePrice.amount) > parseFloat(minPrice.amount)
-      ? formatPrice(comparePrice.amount, comparePrice.currencyCode)
-      : null;
+  const hasCompare = !!(comparePrice && parseFloat(comparePrice.amount) > parseFloat(minPrice.amount));
+  const formattedComparePrice = hasCompare
+    ? formatPrice(comparePrice!.amount, comparePrice!.currencyCode)
+    : null;
 
-  let discountBadge = '';
-  if (comparePrice && parseFloat(comparePrice.amount) > parseFloat(minPrice.amount)) {
+  const isSoldOut = !product.availableForSale;
+  const isNew = Array.isArray(product.tags) && product.tags.some((t) => {
+    const lt = t.trim().toLowerCase();
+    return lt === 'new' || lt === 'new arrival' || lt === 'new-arrival';
+  });
+
+  let badgeHtml = '';
+  if (isSoldOut) {
+    badgeHtml = `<span class="prestige-card-badge badge--soldout prestige-badge-soldout" aria-label="Sold out">Sold Out</span>`;
+  } else if (hasCompare) {
     const cur = parseFloat(minPrice.amount);
-    const orig = parseFloat(comparePrice.amount);
+    const orig = parseFloat(comparePrice!.amount);
     const pct = Math.round(((orig - cur) / orig) * 100);
-    discountBadge = `<span class="home-low-price-recommend-discount">-${pct}%</span>`;
+    badgeHtml = `<span class="prestige-card-badge badge--sale prestige-badge-sale" aria-label="On sale: -${pct}%">${pct > 0 ? `-${pct}%` : 'Sale'}</span>`;
+  } else if (isNew) {
+    badgeHtml = `<span class="prestige-card-badge badge--new prestige-badge-new" aria-label="New arrival">New</span>`;
   }
 
   const primaryImage =
-    product.images.edges[0]?.node?.url ||
+    product.images?.edges?.[0]?.node?.url ||
     'https://thehoshi.to/image/cache/catalog/app/banner/800-100x100.jpg';
+  
+  let secondaryImage = product.images?.edges?.[1]?.node?.url || null;
+  if (!secondaryImage && product.variants?.edges) {
+    const altVar = product.variants.edges.find((e) => e.node?.image?.url && e.node.image.url !== primaryImage);
+    if (altVar?.node?.image?.url) {
+      secondaryImage = altVar.node.image.url;
+    }
+  }
 
   const productLink = `/products/${product.handle}`;
 
+  const variants = product.variants?.edges?.map((e) => e.node) || [];
+  const realOptions = (product.options || []).filter(
+    (o) => o.name !== 'Title' || (o.values.length > 1 || o.values[0] !== 'Default Title')
+  );
+  const isSingleVariant = variants.length <= 1 || realOptions.length === 0;
+  const defaultVariant = variants.find((v) => v.availableForSale) || variants[0];
+  const defaultVariantId = defaultVariant ? defaultVariant.id : '';
+
+  // Real Color Swatches
+  const colorOption = (product.options || []).find(
+    (o) => o.name.toLowerCase() === 'color' || o.name.toLowerCase() === 'colour'
+  );
+  let swatchesHtml = '';
+  if (colorOption && colorOption.values && colorOption.values.length > 0) {
+    const COLOR_HEX_MAP: Record<string, string> = {
+      black: '#111111',
+      white: '#fcfcfc',
+      grey: '#888888',
+      gray: '#888888',
+      navy: '#0f1c3f',
+      blue: '#1e3a8a',
+      brown: '#6e473b',
+      tan: '#d2b48c',
+      beige: '#f5f5dc',
+      gold: '#d4af37',
+      silver: '#c0c0c0',
+      green: '#1b4332',
+      red: '#b91c1c',
+      yellow: '#eab308',
+      orange: '#ea580c',
+      pink: '#f472b6',
+    };
+
+    const maxVisible = 5;
+    const visibleValues = colorOption.values.slice(0, maxVisible);
+    const extraCount = colorOption.values.length - maxVisible;
+
+    const dots = visibleValues
+      .map((val) => {
+        const hex = COLOR_HEX_MAP[val.toLowerCase().trim()] || val.toLowerCase().trim();
+        return `<span class="prestige-card-swatch" style="background-color: ${hex};" title="${escapeHtml(val)}" aria-label="${escapeHtml(val)}"></span>`;
+      })
+      .join('');
+    const extraPill = extraCount > 0 ? `<span class="prestige-card-swatch-more">+${extraCount}</span>` : '';
+    swatchesHtml = `<div class="prestige-card-swatches" aria-label="Color options">${dots}${extraPill}</div>`;
+  }
+
+  // Quick Add UI:
+  // If product is sold out: no quick add button.
+  // If single variant: plus button directly triggers addItem(variantId).
+  // If multi-variant: plus button toggles compact drawer with option pills (e.g. shoe sizes).
+  let quickAddHtml = '';
+  if (!isSoldOut) {
+    if (isSingleVariant) {
+      quickAddHtml = `
+        <button type="button" 
+                class="prestige-quick-add-btn" 
+                data-quick-add-single 
+                data-variant-id="${escapeHtml(defaultVariantId)}" 
+                data-handle="${escapeHtml(product.handle)}" 
+                title="Quick Add to Bag" 
+                aria-label="Quick Add to Bag">
+          <svg class="plus-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      `;
+    } else {
+      const optionName = realOptions[0]?.name || 'Size';
+      quickAddHtml = `
+        <button type="button" 
+                class="prestige-quick-add-btn" 
+                data-quick-add-toggle 
+                data-handle="${escapeHtml(product.handle)}" 
+                title="Select ${escapeHtml(optionName)}" 
+                aria-label="Select ${escapeHtml(optionName)}">
+          <svg class="plus-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+        <div class="prestige-quick-variants-drawer" id="quick-variants-${escapeHtml(product.handle)}">
+          <div class="prestige-quick-variants-header">
+            <span class="prestige-quick-variants-title">Select ${escapeHtml(optionName)}</span>
+            <button type="button" class="prestige-quick-variants-close" data-quick-variants-close aria-label="Close variant selector">&times;</button>
+          </div>
+          <div class="prestige-quick-variants-pills">
+            ${variants
+              .map((v) => {
+                const optVal = v.selectedOptions?.[0]?.value || v.title;
+                if (!v.availableForSale) {
+                  return `<button type="button" class="prestige-variant-pill disabled" disabled title="Out of stock">${escapeHtml(optVal)}</button>`;
+                }
+                return `<button type="button" class="prestige-variant-pill" data-quick-add-variant="${escapeHtml(v.id)}" data-handle="${escapeHtml(product.handle)}" title="Add ${escapeHtml(optVal)} to cart">${escapeHtml(optVal)}</button>`;
+              })
+              .join('\n')}
+          </div>
+        </div>
+      `;
+    }
+  }
+
   return `
-    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 product-item hoshi-recommend-item home-low-price-recommend-item">
-      ${discountBadge}
-      <div class="product-thumb group flex flex-col h-full bg-surface-light dark:bg-surface-dark transition-all duration-300">
-        <div class="image relative aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden rounded-sm mb-1.5">
-          <a href="${productLink}" class="block w-full h-full">
-            <img src="${primaryImage}"
-                 alt="${escapeHtml(product.title)}"
-                 title="${escapeHtml(product.title)}"
-                 loading="lazy"
-                 decoding="async"
-                 class="w-full h-full object-cover bg-white transition-transform duration-700 group-hover:scale-105" />
-          </a>
+    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 product-item prestige-card-col" data-handle="${escapeHtml(product.handle)}">
+      <div class="product-thumb prestige-product-card group" data-handle="${escapeHtml(product.handle)}" data-product-id="${escapeHtml(product.id)}">
+        <div class="image prestige-card-media">
+          ${badgeHtml}
+          
           <button type="button" 
-                  class="wishlist-heart-btn" 
+                  class="prestige-wishlist-btn wishlist-heart-btn" 
                   data-wishlist-btn 
                   data-handle="${escapeHtml(product.handle)}" 
                   data-product-id="${escapeHtml(product.id)}" 
                   title="Add to Wishlist" 
-                  aria-label="Add to Wishlist" 
-                  style="position:absolute;top:8px;right:8px;z-index:20;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.92);backdrop-filter:blur(4px);border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:all 0.2s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 5px rgba(0,0,0,0.08);color:#222;">
-            <svg class="heart-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none;transition:all 0.2s ease;">
+                  aria-label="Add to Wishlist">
+            <svg class="heart-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
           </button>
-          <div class="hidden md:block absolute bottom-0 left-0 w-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-white/90 dark:bg-black/80 backdrop-blur-sm py-2">
-            <div class="button-group product-button-wrapper" style="display:flex;align-items:center;justify-content:center;gap:6px;">
-              <a href="${productLink}" class="btn cart" style="display:inline-flex;align-items:center;justify-content:center;" title="View Details">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-              </a>
-              <button type="button" class="btn add-wishlist wishlist-heart-btn" data-wishlist-btn data-handle="${escapeHtml(product.handle)}" data-product-id="${escapeHtml(product.id)}" style="display:inline-flex;align-items:center;justify-content:center;cursor:pointer;" title="Add to Wishlist">
-                <svg class="heart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none;">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
+
+          <a href="${productLink}" class="prestige-card-image-link" aria-label="${escapeHtml(product.title)}">
+            <img src="${primaryImage}" 
+                 alt="${escapeHtml(product.title)}" 
+                 title="${escapeHtml(product.title)}" 
+                 loading="lazy" 
+                 decoding="async" 
+                 class="prestige-card-img prestige-primary-img ${secondaryImage ? 'has-secondary' : ''}" />
+            ${
+              secondaryImage
+                ? `
+            <img src="${secondaryImage}" 
+                 alt="${escapeHtml(product.title)}" 
+                 title="${escapeHtml(product.title)}" 
+                 loading="lazy" 
+                 decoding="async" 
+                 class="prestige-card-img prestige-secondary-img" />
+            `
+                : ''
+            }
+          </a>
+
+          ${quickAddHtml}
         </div>
 
-        <div class="caption text-center flex flex-col px-0.5">
-          <div class="name-container h-[26px] mb-0.5 overflow-hidden">
-            <h4 class="m-0 p-0">
-              <a class="product-name font-bold text-[10px] md:text-sm text-gray-800 dark:text-gray-300 uppercase tracking-[0.05em] leading-[1.3] hover:text-primary transition-colors line-clamp-2 block" 
-                 href="${productLink}" 
-                 title="${escapeHtml(product.title)}">
-                ${escapeHtml(product.title)}
-              </a>
-            </h4>
+        <div class="caption prestige-card-info">
+          <div class="prestige-card-vendor">${escapeHtml(product.vendor || product.productType || 'BROOD')}</div>
+          <h3 class="name prestige-card-title m-0 p-0">
+            <a class="product-name font-bold text-[11px] md:text-sm text-gray-800 dark:text-gray-300 uppercase tracking-[0.05em] leading-[1.3] line-clamp-2 block" href="${productLink}" title="${escapeHtml(product.title)}">
+              ${escapeHtml(product.title)}
+            </a>
+          </h3>
+          <div class="price price-wrapper prestige-card-price-row mt-1">
+            <span class="price-new prestige-price-current font-bold">${formattedPrice}</span>
+            ${formattedComparePrice ? `<span class="price-old prestige-price-compare text-xs text-gray-400 line-through ml-2">${formattedComparePrice}</span>` : ''}
           </div>
-
-          <div class="price-wrapper mt-0.5">
-            <div class="price">
-              <div>
-                <div class="product-price">
-                  <span class="price-new">${formattedPrice}</span>
-                  ${formattedComparePrice ? `<span class="price-old">${formattedComparePrice}</span>` : ''}
-                </div>
-              </div>
-            </div>
-          </div>
+          ${swatchesHtml}
         </div>
       </div>
     </div>
@@ -1343,103 +1646,56 @@ export function renderCollectionHtml(
 }
 
 /**
- * Render entire Product Detail HTML dynamically into the existing template.
+ * Render entire Product Detail HTML dynamically with Prestige Allure visual style.
  */
-export function renderProductDetailHtml(templateHtml: string, product: ShopifyProduct): string {
+export function renderProductDetailHtml(
+  templateHtml: string,
+  product: ShopifyProduct,
+  relatedProducts: ShopifyProduct[] = []
+): string {
   const minPrice = product.priceRange.minVariantPrice;
   const comparePrice = product.compareAtPriceRange?.minVariantPrice;
   const formattedPrice = formatPrice(minPrice.amount, minPrice.currencyCode);
-  const formattedComparePrice =
-    comparePrice && parseFloat(comparePrice.amount) > parseFloat(minPrice.amount)
-      ? formatPrice(comparePrice.amount, comparePrice.currencyCode)
-      : null;
+  const hasCompare = !!(comparePrice && parseFloat(comparePrice.amount) > parseFloat(minPrice.amount));
+  const formattedComparePrice = hasCompare
+    ? formatPrice(comparePrice!.amount, comparePrice!.currencyCode)
+    : null;
+
+  const discountPct = hasCompare
+    ? Math.round(
+        ((parseFloat(comparePrice!.amount) - parseFloat(minPrice.amount)) /
+          parseFloat(comparePrice!.amount)) *
+          100
+      )
+    : 0;
 
   let html = templateHtml;
 
-  // 1. Page title
-  html = html.replace(/<title>.*?<\/title>/i, `<title>${escapeHtml(product.title)} - TheHoshi</title>`);
-
-  // 2. Swiper slides & thumbnails
-  const images = product.images.edges;
-  let slidesHtml = '';
-  let thumbsHtml = '';
-
-  if (images.length > 0) {
-    slidesHtml = images
-      .map(
-        (edge, idx) => `
-      <div class="swiper-slide flex items-center justify-center overflow-hidden">
-        <img src="${edge.node.url}" alt="${escapeHtml(edge.node.altText || product.title)}" loading="${idx === 0 ? 'eager' : 'lazy'}" decoding="async" class="w-full h-full object-contain" />
-      </div>
-    `
-      )
-      .join('\n');
-
-    thumbsHtml = images
-      .map(
-        (edge, idx) => `
-      <button type="button" class="product-thumb-item ${idx === 0 ? 'active' : ''}" data-slide-index="${idx}" aria-label="View product image ${idx + 1}">
-        <img src="${edge.node.url}" alt="${escapeHtml(edge.node.altText || product.title)} thumbnail ${idx + 1}" loading="lazy" decoding="async" />
-      </button>
-    `
-      )
-      .join('\n');
-  } else {
-    slidesHtml = `
-      <div class="swiper-slide flex items-center justify-center overflow-hidden">
-        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#888;">No image available</div>
-      </div>
-    `;
-    thumbsHtml = '';
-  }
-
-  // Inject slides
+  // 1. Page title & SEO
+  html = html.replace(/<title>.*?<\/title>/i, `<title>${escapeHtml(product.title)} - BROOD</title>`);
+  const metaDesc = product.description || `Discover authentic ${product.title} from Brood. Premium craftsmanship and express worldwide delivery.`;
   html = html.replace(
-    /(<div id="product-slides-ajax"[^>]*>[\s\S]*?<div class="swiper-wrapper">)[\s\S]*?(<\/div>\s*<\/div>\s*<div id="swipe-hint-bottom")/i,
-    `$1\n${slidesHtml}\n$2`
+    /<meta name="description" content=".*?" \/>/i,
+    `<meta name="description" content="${escapeHtml(metaDesc)}" />`
   );
 
-  // Inject thumbnails
-  html = html.replace(
-    /(<div id="product-thumb-grid"[^>]*>)[\s\S]*?(<\/div>\s*<button type="button" class="product-thumb-nav product-thumb-next")/i,
-    `$1\n${thumbsHtml}\n$2`
-  );
+  // 2. Images & Gallery
+  const rawImages = product.images.edges;
+  const images =
+    rawImages.length > 0
+      ? rawImages
+      : [
+          {
+            node: {
+              url: 'https://thehoshi.to/image/cache/catalog/app/banner/800-100x100.jpg',
+              altText: product.title,
+            },
+          },
+        ];
 
-  // Swipe fraction
-  html = html.replace(
-    /<div id="swipe-fraction" class="swipe-fraction">[\s\S]*?<\/div>/i,
-    `<div id="swipe-fraction" class="swipe-fraction">1 / ${Math.max(1, images.length)}</div>`
-  );
-
-  // 3. Product Info: Title, Brand, Availability, Prices
-  const availabilityBadge = product.availableForSale
-    ? `<span style="display:inline-block;padding:3px 10px;font-size:11px;font-weight:700;letter-spacing:0.05em;background:#e6f4ea;color:#137333;border-radius:3px;margin-bottom:8px;">IN STOCK</span>`
-    : `<span style="display:inline-block;padding:3px 10px;font-size:11px;font-weight:700;letter-spacing:0.05em;background:#fce8e6;color:#c5221f;border-radius:3px;margin-bottom:8px;">OUT OF STOCK</span>`;
-
-  const metaLine = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;color:#777;text-transform:uppercase;letter-spacing:0.06em;"><span>${escapeHtml(product.vendor || 'TheHoshi')}</span>${product.productType ? `<span>•</span><span>${escapeHtml(product.productType)}</span>` : ''}</div>`;
-
-  const priceBlock = `
-    <div class="px-5 pt-5 pb-2">
-      ${availabilityBadge}
-      ${metaLine}
-      <h2 class="text-lg font-medium leading-tight text-gray-900 mb-2">${escapeHtml(product.title)}</h2>
-      <div class="flex items-end gap-2 mb-4">
-        <span class="text-2xl font-bold text-[#E60000]">${formattedPrice}</span>
-        ${formattedComparePrice ? `<span class="text-sm text-gray-400 line-through mb-1">${formattedComparePrice}</span>` : ''}
-        ${formattedComparePrice ? `<span class="reference-retail-price" style="display:inline-block;white-space:nowrap;margin-left:8px;color:#777;font-size:12px;text-decoration:line-through;">≈ ${formattedComparePrice} Luxury Retail</span>` : ''}
-      </div>
-    </div>
-  `;
-
-  html = html.replace(
-    /<div class="px-5 pt-5 pb-2">[\s\S]*?<\/div>\s*<\/div>/i,
-    priceBlock
-  );
-
-  // 4. Options / Variants & Quantity
+  // 3. Variants & Options
   const variants = product.variants.edges.map((e) => e.node);
   const defaultVariant = variants.find((v) => v.availableForSale) || variants[0];
-
   const realOptions = (product.options || []).filter(
     (o) => o.name !== 'Title' || (o.values.length > 1 || o.values[0] !== 'Default Title')
   );
@@ -1452,94 +1708,570 @@ export function renderProductDetailHtml(templateHtml: string, product: ShopifyPr
           defaultVariant?.selectedOptions?.find((so) => so.name === opt.name)?.value ||
           opt.values[0];
         return `
-      <div class="option-group-wrapper required">
-        <div class="option-label luxury-label">${escapeHtml(opt.name)}</div>
-        <div class="luxury-option-grid">
-          ${opt.values
-            .map((val) => {
-              const isChecked = val === defaultVal;
-              return `
-            <label class="luxury-option-item">
-              <input type="radio" 
-                     class="required-1 luxury-variant-radio ${isChecked ? 'active' : ''}" 
-                     name="option[${escapeHtml(opt.name)}]" 
-                     data-option-name="${escapeHtml(opt.name)}" 
-                     value="${escapeHtml(val)}" 
-                     ${isChecked ? 'checked="checked"' : ''} />
-              <div class="option-btn-content">${escapeHtml(val)}</div>
-            </label>
-          `;
-            })
-            .join('\n')}
+        <div class="prestige-opt-group">
+          <div class="prestige-opt-label">
+            <span>${escapeHtml(opt.name)}</span>
+            <span class="prestige-selected-val" id="selected-val-${escapeHtml(opt.name)}" style="font-weight:700;color:#111;">${escapeHtml(defaultVal)}</span>
+          </div>
+          <div class="prestige-opt-pills">
+            ${opt.values
+              .map((val) => {
+                const isChecked = val === defaultVal;
+                const hasStock = variants.some(
+                  (v) =>
+                    v.selectedOptions?.some((so) => so.name === opt.name && so.value === val) &&
+                    v.availableForSale
+                );
+                return `
+                <label class="prestige-opt-item luxury-option-item">
+                  <input type="radio" 
+                         class="luxury-variant-radio ${isChecked ? 'active' : ''}" 
+                         name="option[${escapeHtml(opt.name)}]" 
+                         data-option-name="${escapeHtml(opt.name)}" 
+                         value="${escapeHtml(val)}" 
+                         ${isChecked ? 'checked="checked"' : ''}
+                         ${!hasStock ? 'disabled' : ''} />
+                  <span class="prestige-opt-btn option-btn-content ${!hasStock ? 'disabled' : ''}">${escapeHtml(val)}</span>
+                </label>
+              `;
+              })
+              .join('\n')}
+          </div>
         </div>
-      </div>
-    `;
+      `;
       })
       .join('\n');
   }
 
-  const quantityHtml = `
-    <div class="option-group-wrapper" id="pdp-quantity-wrapper" style="margin-top: 14px;">
-      <div class="option-label luxury-label" style="font-size: 13px; font-weight: 700; margin-bottom: 8px;">Quantity</div>
-      <div class="luxury-quantity-wrapper flex items-center" id="product-quantity" style="display:inline-flex;align-items:center;border:1px solid #d9d9d9;border-radius:2px;overflow:hidden;background:#fff;">
-        <button type="button" class="quantity-down" id="pdp-qty-down" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;font-size:16px;color:#333;">−</button>
-        <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control text-center" style="width:48px;height:36px;border:none;border-left:1px solid #eee;border-right:1px solid #eee;text-align:center;font-weight:600;font-size:14px;color:#111;padding:0;" readonly />
-        <button type="button" class="quantity-up" id="pdp-qty-up" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;font-size:16px;color:#333;">+</button>
-      </div>
-    </div>
-  `;
-
-  const variantControls = `
-    <input type="hidden" name="variant_id" id="selected-variant-id" value="${defaultVariant ? defaultVariant.id : ''}" />
-    <script id="shopify-variants-data" type="application/json">${JSON.stringify(variants)}</script>
-    ${optionsHtml}
-    ${quantityHtml}
-  `;
-
-  html = html.replace(
-    /(<div id="options" class="space-y-6">)[\s\S]*?(<\/div>\s*<script type="text\/javascript"><!--)/i,
-    `$1\n${variantControls}\n$2`
-  );
-
-  // 5. Description tab
+  // 4. Description Content
   const descriptionContent =
     product.descriptionHtml && product.descriptionHtml.trim().length > 0
       ? product.descriptionHtml
       : product.description
-      ? `<p style="padding:16px 0;line-height:1.7;color:#444;">${escapeHtml(product.description)}</p>`
-      : `<p style="padding:16px 0;color:#888;">No description available for this product.</p>`;
+      ? `<p style="line-height:1.7;color:#444;">${escapeHtml(product.description)}</p>`
+      : `<p style="color:#888;">Crafted with superior materials and uncompromising precision. Brood brings you authentic luxury design.</p>`;
 
-  html = html.replace(
-    /(<div class="tab-pane active" id="tab-description">)[\s\S]*?(<\/div>\s*<style>)/i,
-    `$1\n<div class="prose prose-sm max-w-none luxury-detail" style="padding:16px 0;">${descriptionContent}</div>\n$2`
+  const isShoe =
+    product.productType?.toLowerCase().includes('shoe') ||
+    product.productType?.toLowerCase().includes('sneaker') ||
+    product.tags?.some((t) => t.toLowerCase().includes('shoes') || t.toLowerCase().includes('footwear'));
+
+  const metafields = (product.metafields || []).filter(
+    (m): m is ShopifyMetafield => !!(m && m.value && m.value.trim().length > 0)
   );
+  const metafieldRows = metafields
+    .map((m) => {
+      const label = m.key
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+      return `<tr><th>${escapeHtml(label)}</th><td>${escapeHtml(m.value)}</td></tr>`;
+    })
+    .join('\n');
+  const sku = defaultVariant?.id ? defaultVariant.id.split('/').pop() || '' : '';
 
-  // 6. Wishlist Button on Product Page
-  html = html.replace(
-    /id="button-add-to-wishlist"[^>]*>/i,
-    `id="button-add-to-wishlist" data-wishlist-btn data-handle="${escapeHtml(product.handle)}" data-product-id="${escapeHtml(product.id)}" aria-label="Add to Wishlist" title="Add to Wishlist">`
-  );
+  // 5. Build Complete Prestige Allure PDP Markup
+  const pdpMarkup = `
+    <div class="prestige-pdp-container" data-current-handle="${escapeHtml(product.handle)}">
+      <!-- Breadcrumb Navigation -->
+      <nav class="prestige-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="bc-sep">/</span>
+        <a href="/shop">Shop</a>
+        ${
+          product.productType
+            ? `<span class="bc-sep">/</span><a href="/collections/${product.productType
+                .toLowerCase()
+                .replace(/\s+/g, '-')}">${escapeHtml(product.productType)}</a>`
+            : ''
+        }
+        <span class="bc-sep">/</span>
+        <span class="bc-current">${escapeHtml(product.title)}</span>
+      </nav>
 
-  const pdpScript = `
+      <!-- Main Editorial 2-Column Layout -->
+      <div class="prestige-pdp-layout">
+        <!-- Left: Product Media Gallery -->
+        <div class="prestige-gallery-col">
+          <!-- Desktop Sticky Media Gallery -->
+          <div class="prestige-gallery-sticky prestige-desktop-gallery">
+            <div class="prestige-main-viewport" id="pdp-main-viewport">
+              ${images
+                .map(
+                  (edge, idx) => `
+                <div class="prestige-main-slide ${idx === 0 ? 'is-active' : ''}" data-slide-idx="${idx}">
+                  <div class="prestige-zoom-wrap" data-img-src="${escapeHtml(edge.node.url)}">
+                    <img src="${escapeHtml(edge.node.url)}" 
+                         alt="${escapeHtml(edge.node.altText || product.title)}" 
+                         loading="${idx === 0 ? 'eager' : 'lazy'}" 
+                         decoding="async" 
+                         class="prestige-pdp-main-img" />
+                  </div>
+                </div>
+              `
+                )
+                .join('\n')}
+
+              <button type="button" class="prestige-zoom-trigger" id="pdp-zoom-btn" title="View Fullscreen" aria-label="View Fullscreen">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <polyline points="9 21 3 21 3 15"></polyline>
+                  <line x1="21" y1="3" x2="14" y2="10"></line>
+                  <line x1="3" y1="21" x2="10" y2="14"></line>
+                </svg>
+              </button>
+            </div>
+
+            ${
+              images.length > 1
+                ? `
+            <div class="prestige-thumbs-strip" id="pdp-thumbs-strip">
+              ${images
+                .map(
+                  (edge, idx) => `
+                <button type="button" 
+                        class="prestige-thumb-item ${idx === 0 ? 'is-active' : ''}" 
+                        data-thumb-target="${idx}" 
+                        aria-label="View image ${idx + 1}">
+                  <img src="${escapeHtml(edge.node.url)}" alt="Thumbnail ${idx + 1}" loading="lazy" />
+                </button>
+              `
+                )
+                .join('\n')}
+            </div>
+            `
+                : ''
+            }
+          </div>
+
+          <!-- Mobile Stacked Media Gallery (Touch-friendly 4:5 stacked media) -->
+          <div class="prestige-mobile-gallery-stacked" id="pdp-mobile-stacked">
+            ${images
+              .map(
+                (edge, idx) => `
+              <div class="prestige-mobile-media-item" data-media-idx="${idx}" data-img-src="${escapeHtml(edge.node.url)}" role="button" tabindex="0" aria-label="View image ${idx + 1} fullscreen">
+                <img src="${escapeHtml(edge.node.url)}" 
+                     alt="${escapeHtml(edge.node.altText || product.title)}" 
+                     loading="${idx === 0 ? 'eager' : 'lazy'}" 
+                     decoding="async" 
+                     class="prestige-pdp-mobile-img" />
+                <span class="prestige-mobile-zoom-pill" aria-label="Tap to view fullscreen">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                </span>
+              </div>
+            `
+              )
+              .join('\n')}
+          </div>
+        </div>
+
+        <!-- Right: Sticky Product Info -->
+        <div class="prestige-info-col">
+          <div class="prestige-info-sticky">
+            <div class="prestige-info-meta">
+              <span class="prestige-vendor-tag">${escapeHtml(product.vendor || 'BROOD')}</span>
+              <span class="prestige-stock-badge ${product.availableForSale ? 'in-stock' : 'out-of-stock'}">
+                <span class="stock-dot"></span>
+                ${product.availableForSale ? 'In Stock' : 'Out of Stock'}
+              </span>
+            </div>
+
+            <h1 class="product-name prestige-product-title">${escapeHtml(product.title)}</h1>
+
+            <div class="prestige-price-box">
+              <span class="prestige-current-price" id="pdp-price">${formattedPrice}</span>
+              ${formattedComparePrice ? `<span class="prestige-compare-price">${formattedComparePrice}</span>` : ''}
+              ${hasCompare ? `<span class="prestige-discount-pill">-${discountPct}%</span>` : ''}
+            </div>
+
+            <!-- Variants Section -->
+            <div class="prestige-variants-section" id="pdp-variants-wrapper">
+              <input type="hidden" name="variant_id" id="selected-variant-id" value="${defaultVariant ? defaultVariant.id : ''}" />
+              <script id="shopify-variants-data" type="application/json">${JSON.stringify(variants)}</script>
+              ${optionsHtml}
+            </div>
+
+            <!-- Quantity Stepper -->
+            <div class="prestige-qty-section">
+              <span class="prestige-qty-heading">Quantity</span>
+              <div class="prestige-qty-controls">
+                <button type="button" class="prestige-qty-btn" id="pdp-qty-down" aria-label="Decrease quantity">−</button>
+                <input type="text" id="input-quantity" name="quantity" class="prestige-qty-field" value="1" readonly />
+                <button type="button" class="prestige-qty-btn" id="pdp-qty-up" aria-label="Increase quantity">+</button>
+              </div>
+            </div>
+
+            <!-- Action Buttons Stack -->
+            <div class="prestige-actions-stack">
+              <button type="button" 
+                      class="prestige-btn-primary button-add-to-cart" 
+                      id="pdp-add-to-cart" 
+                      data-action="add-to-cart"
+                      ${!product.availableForSale ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>
+                <span>${product.availableForSale ? 'Add to Bag' : 'Out of Stock'}</span>
+              </button>
+
+              <button type="button" 
+                      class="prestige-btn-secondary button-buy-now" 
+                      id="pdp-buy-now" 
+                      data-action="buy-now"
+                      ${!product.availableForSale ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>
+                <span>Buy Now</span>
+              </button>
+
+              <button type="button" 
+                      class="prestige-btn-wishlist wishlist-heart-btn" 
+                      id="button-add-to-wishlist" 
+                      data-wishlist-btn 
+                      data-handle="${escapeHtml(product.handle)}" 
+                      data-product-id="${escapeHtml(product.id)}" 
+                      aria-label="Add to Wishlist">
+                <svg class="heart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span class="wishlist-label">Add to Wishlist</span>
+              </button>
+            </div>
+
+            <!-- Factual Service Highlights -->
+            <div class="prestige-trust-features">
+              <div class="trust-feat-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <div>
+                  <strong>Worldwide Delivery</strong>
+                  <span>Tracked shipping calculated at checkout</span>
+                </div>
+              </div>
+              <div class="trust-feat-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <div>
+                  <strong>Secure Checkout</strong>
+                  <span>Encrypted payment processing powered by Shopify</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Prestige Accordion Information Stack -->
+            <div class="prestige-accordion-stack">
+              <details class="prestige-acc-item" open>
+                <summary class="prestige-acc-trigger">
+                  <span>Description</span>
+                  <span class="acc-icon">+</span>
+                </summary>
+                <div class="prestige-acc-content prose max-w-none">
+                  ${descriptionContent}
+                </div>
+              </details>
+
+              <details class="prestige-acc-item">
+                <summary class="prestige-acc-trigger">
+                  <span>Details & Specifications</span>
+                  <span class="acc-icon">+</span>
+                </summary>
+                <div class="prestige-acc-content">
+                  <table class="prestige-specs-table">
+                    <tbody>
+                      <tr><th>Vendor</th><td>${escapeHtml(product.vendor || 'Brood')}</td></tr>
+                      ${product.productType ? `<tr><th>Category</th><td>${escapeHtml(product.productType)}</td></tr>` : ''}
+                      ${product.tags && product.tags.length > 0 ? `<tr><th>Tags</th><td>${escapeHtml(product.tags.join(', '))}</td></tr>` : ''}
+                      <tr><th>Availability</th><td>${product.availableForSale ? 'Available in Stock' : 'Currently Unavailable'}</td></tr>
+                      ${sku ? `<tr><th>SKU / ID</th><td>${escapeHtml(sku)}</td></tr>` : ''}
+                      ${metafieldRows}
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+
+              <details class="prestige-acc-item">
+                <summary class="prestige-acc-trigger">
+                  <span>Shipping & Delivery</span>
+                  <span class="acc-icon">+</span>
+                </summary>
+                <div class="prestige-acc-content">
+                  <p>Shipping methods, rates, and estimated delivery dates are calculated in real time during checkout based on your delivery address.</p>
+                </div>
+              </details>
+
+              <details class="prestige-acc-item">
+                <summary class="prestige-acc-trigger">
+                  <span>Customer Care</span>
+                  <span class="acc-icon">+</span>
+                </summary>
+                <div class="prestige-acc-content">
+                  <p>Need assistance with sizing, specifications, or placing an order? Our customer support is available to assist you. Contact us anytime via our contact page.</p>
+                </div>
+              </details>
+
+              ${
+                isShoe
+                  ? `
+              <details class="prestige-acc-item">
+                <summary class="prestige-acc-trigger">
+                  <span>Size & Fit Guide</span>
+                  <span class="acc-icon">+</span>
+                </summary>
+                <div class="prestige-acc-content">
+                  <p style="margin-bottom:10px;">Standard European sizing guide for footwear:</p>
+                  <table class="prestige-size-table">
+                    <thead><tr><th>EU Size</th><th>UK</th><th>US</th><th>Foot Length (cm)</th></tr></thead>
+                    <tbody>
+                      <tr><td>40</td><td>6.5</td><td>7.5</td><td>25.5 cm</td></tr>
+                      <tr><td>41</td><td>7.5</td><td>8.5</td><td>26.2 cm</td></tr>
+                      <tr><td>42</td><td>8.0</td><td>9.0</td><td>26.8 cm</td></tr>
+                      <tr><td>43</td><td>9.0</td><td>10.0</td><td>27.5 cm</td></tr>
+                      <tr><td>44</td><td>9.5</td><td>10.5</td><td>28.2 cm</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+              `
+                  : ''
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Products ("You May Also Like") -->
+      ${
+        relatedProducts.length > 0
+          ? `
+      <section class="prestige-recommendations-section">
+        <div class="prestige-section-header">
+          <span class="prestige-section-subtitle">Curated Collection</span>
+          <h2 class="prestige-section-heading">You May Also Like</h2>
+        </div>
+        <div class="row product-grid-box">
+          ${relatedProducts
+            .slice(0, 4)
+            .map((p) => renderShopProductCard(p))
+            .join('\n')}
+        </div>
+      </section>
+      `
+          : ''
+      }
+
+      <!-- Recently Viewed Section -->
+      <section class="prestige-recently-viewed-section" id="prestige-recent-section" style="display:none;">
+        <div class="prestige-section-header">
+          <span class="prestige-section-subtitle">Recently Viewed</span>
+          <h2 class="prestige-section-heading">Continue Exploring</h2>
+        </div>
+        <div class="row product-grid-box" id="prestige-recent-grid"></div>
+      </section>
+
+      <!-- Fullscreen Lightbox Modal with Multi-image Navigation & Counter -->
+      <div class="prestige-lightbox" id="pdp-lightbox" aria-hidden="true" role="dialog" aria-label="Product Media Lightbox">
+        <button type="button" class="prestige-lightbox-close" id="pdp-lightbox-close" aria-label="Close fullscreen view">&times;</button>
+        <button type="button" class="prestige-lightbox-nav prev" id="pdp-lightbox-prev" aria-label="Previous image">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div class="prestige-lightbox-content">
+          <img src="" id="pdp-lightbox-img" alt="Product fullscreen preview" />
+        </div>
+        <button type="button" class="prestige-lightbox-nav next" id="pdp-lightbox-next" aria-label="Next image">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="prestige-lightbox-counter" id="pdp-lightbox-counter">1 / 1</div>
+      </div>
+    </div>
+  `;
+
+  // Inject into template
+  if (html.includes('<!-- BROOD_PRESTIGE_PDP_CONTENT -->')) {
+    html = html.replace('<!-- BROOD_PRESTIGE_PDP_CONTENT -->', pdpMarkup);
+  } else {
+    html = html.replace(
+      /(<div class="default-product-info-column">)[\s\S]*?(<\/section>\s*<\/div>)/i,
+      pdpMarkup
+    );
+  }
+
+  const pdpClientScript = `
     <script>
     (function() {
+      // 1. Gallery Image Collection & Switching
+      var mainSlides = document.querySelectorAll('.prestige-main-slide');
+      var thumbBtns = document.querySelectorAll('.prestige-thumb-item');
+      var mobileItems = document.querySelectorAll('.prestige-mobile-media-item');
+
+      var allImageUrls = [];
+      mainSlides.forEach(function(s) {
+        var im = s.querySelector('img');
+        if (im && im.src) allImageUrls.push(im.src);
+      });
+      if (allImageUrls.length === 0) {
+        mobileItems.forEach(function(m) {
+          var im = m.querySelector('img');
+          if (im && im.src) allImageUrls.push(im.src);
+        });
+      }
+
+      function setActiveSlide(idx) {
+        mainSlides.forEach(function(s) {
+          s.classList.toggle('is-active', s.getAttribute('data-slide-idx') === String(idx));
+        });
+        thumbBtns.forEach(function(b) {
+          b.classList.toggle('is-active', b.getAttribute('data-thumb-target') === String(idx));
+        });
+      }
+
+      thumbBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var idx = btn.getAttribute('data-thumb-target');
+          if (idx !== null) setActiveSlide(parseInt(idx, 10));
+        });
+      });
+
+      // Desktop Cursor Zoom (Magnifying Pan)
+      document.querySelectorAll('.prestige-zoom-wrap').forEach(function(wrap) {
+        var img = wrap.querySelector('.prestige-pdp-main-img');
+        if (!img) return;
+
+        wrap.addEventListener('mousemove', function(e) {
+          if (window.innerWidth <= 768) return;
+          var rect = wrap.getBoundingClientRect();
+          var x = ((e.clientX - rect.left) / rect.width) * 100;
+          var y = ((e.clientY - rect.top) / rect.height) * 100;
+          img.style.transformOrigin = x + '% ' + y + '%';
+          img.style.transform = 'scale(1.75)';
+        });
+
+        wrap.addEventListener('mouseleave', function() {
+          img.style.transform = 'scale(1)';
+          img.style.transformOrigin = 'center center';
+        });
+
+        wrap.addEventListener('click', function() {
+          var activeSlide = wrap.closest('.prestige-main-slide');
+          var idx = activeSlide ? parseInt(activeSlide.getAttribute('data-slide-idx') || '0', 10) : 0;
+          openLightbox(idx);
+        });
+      });
+
+      mobileItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+          var idx = parseInt(item.getAttribute('data-media-idx') || '0', 10);
+          openLightbox(idx);
+        });
+        item.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            var idx = parseInt(item.getAttribute('data-media-idx') || '0', 10);
+            openLightbox(idx);
+          }
+        });
+      });
+
+      // 2. Lightbox Zoom Modal
+      var zoomBtn = document.getElementById('pdp-zoom-btn');
+      var lightbox = document.getElementById('pdp-lightbox');
+      var lightboxImg = document.getElementById('pdp-lightbox-img');
+      var lightboxClose = document.getElementById('pdp-lightbox-close');
+      var lightboxPrev = document.getElementById('pdp-lightbox-prev');
+      var lightboxNext = document.getElementById('pdp-lightbox-next');
+      var lightboxCounter = document.getElementById('pdp-lightbox-counter');
+      var currentLightboxIdx = 0;
+
+      function updateLightbox(idx) {
+        if (!allImageUrls.length) return;
+        if (idx < 0) idx = allImageUrls.length - 1;
+        if (idx >= allImageUrls.length) idx = 0;
+        currentLightboxIdx = idx;
+        if (lightboxImg) lightboxImg.src = allImageUrls[currentLightboxIdx];
+        if (lightboxCounter) {
+          lightboxCounter.textContent = (currentLightboxIdx + 1) + ' / ' + allImageUrls.length;
+        }
+      }
+
+      function openLightbox(idx) {
+        if (!lightbox) return;
+        var startIdx = typeof idx === 'number' ? idx : 0;
+        var activeSlide = document.querySelector('.prestige-main-slide.is-active');
+        if (typeof idx !== 'number' && activeSlide) {
+          startIdx = parseInt(activeSlide.getAttribute('data-slide-idx') || '0', 10);
+        }
+        updateLightbox(startIdx);
+        lightbox.classList.add('is-open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        if (lightbox) {
+          lightbox.classList.remove('is-open');
+          lightbox.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+      }
+
+      if (zoomBtn) zoomBtn.addEventListener('click', openLightbox);
+      if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+      if (lightboxPrev) {
+        lightboxPrev.addEventListener('click', function(e) {
+          e.stopPropagation();
+          updateLightbox(currentLightboxIdx - 1);
+        });
+      }
+      if (lightboxNext) {
+        lightboxNext.addEventListener('click', function(e) {
+          e.stopPropagation();
+          updateLightbox(currentLightboxIdx + 1);
+        });
+      }
+      if (lightbox) {
+        lightbox.addEventListener('click', function(e) {
+          if (e.target === lightbox || e.target.classList.contains('prestige-lightbox-content')) closeLightbox();
+        });
+
+        // Touch swipe support for lightbox
+        var touchStartX = 0;
+        lightbox.addEventListener('touchstart', function(e) {
+          if (e.changedTouches && e.changedTouches[0]) {
+            touchStartX = e.changedTouches[0].clientX;
+          }
+        }, { passive: true });
+        lightbox.addEventListener('touchend', function(e) {
+          if (e.changedTouches && e.changedTouches[0]) {
+            var diffX = e.changedTouches[0].clientX - touchStartX;
+            if (diffX > 40) updateLightbox(currentLightboxIdx - 1);
+            else if (diffX < -40) updateLightbox(currentLightboxIdx + 1);
+          }
+        }, { passive: true });
+      }
+
+      document.addEventListener('keydown', function(e) {
+        if (!lightbox || !lightbox.classList.contains('is-open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') updateLightbox(currentLightboxIdx - 1);
+        if (e.key === 'ArrowRight') updateLightbox(currentLightboxIdx + 1);
+      });
+
+      // 3. Variant Selection Logic
       var variantsEl = document.getElementById('shopify-variants-data');
-      if (!variantsEl) return;
-      var variants = JSON.parse(variantsEl.textContent || '[]');
+      var variants = variantsEl ? JSON.parse(variantsEl.textContent || '[]') : [];
       var variantInput = document.getElementById('selected-variant-id');
-      var priceDisplay = document.querySelector('.text-2xl.font-bold') || document.querySelector('.total-price-info');
+      var priceDisplay = document.getElementById('pdp-price');
+      var addBtn = document.getElementById('pdp-add-to-cart');
+      var buyBtn = document.getElementById('pdp-buy-now');
 
       function getSelectedOptions() {
         var selected = {};
         var checked = document.querySelectorAll('.luxury-variant-radio:checked');
         checked.forEach(function(r) {
           var optName = r.getAttribute('data-option-name');
-          if (optName) selected[optName] = r.value;
+          if (optName) {
+            selected[optName] = r.value;
+            var labelSpan = document.getElementById('selected-val-' + optName);
+            if (labelSpan) labelSpan.textContent = r.value;
+          }
         });
         return selected;
       }
 
       function updateVariant() {
+        if (!variants.length) return;
         var selectedOptions = getSelectedOptions();
         var matched = variants.find(function(v) {
           if (!v.selectedOptions || v.selectedOptions.length === 0) return true;
@@ -1563,16 +2295,16 @@ export function renderProductDetailHtml(templateHtml: string, product: ShopifyPr
             }
           }
 
-          var addBtns = document.querySelectorAll('.button-add-to-cart, [data-action="add-to-cart"]');
-          var buyBtns = document.querySelectorAll('.button-buy-now, [data-action="buy-now"]');
+          var addBtns = document.querySelectorAll('.button-add-to-cart, #pdp-add-to-cart');
+          var buyBtns = document.querySelectorAll('.button-buy-now, #pdp-buy-now');
 
           if (!matched.availableForSale) {
             addBtns.forEach(function(btn) {
               btn.disabled = true;
               btn.style.opacity = '0.4';
               btn.style.cursor = 'not-allowed';
-              var s = btn.querySelector('span');
-              if (s) s.textContent = 'Out of Stock';
+              var s = btn.querySelector('span') || btn;
+              s.textContent = 'Out of Stock';
             });
             buyBtns.forEach(function(btn) {
               btn.disabled = true;
@@ -1584,8 +2316,8 @@ export function renderProductDetailHtml(templateHtml: string, product: ShopifyPr
               btn.disabled = false;
               btn.style.opacity = '1';
               btn.style.cursor = 'pointer';
-              var s = btn.querySelector('span');
-              if (s) s.textContent = 'Add to Cart';
+              var s = btn.querySelector('span') || btn;
+              s.textContent = 'Add to Bag';
             });
             buyBtns.forEach(function(btn) {
               btn.disabled = false;
@@ -1596,88 +2328,118 @@ export function renderProductDetailHtml(templateHtml: string, product: ShopifyPr
         }
       }
 
-      // Variant selection radio listeners
       document.addEventListener('change', function(e) {
         if (e.target && e.target.classList.contains('luxury-variant-radio')) {
           updateVariant();
         }
       });
-      document.addEventListener('click', function(e) {
-        var label = e.target.closest('.luxury-option-item');
-        if (label) {
-          var radio = label.querySelector('.luxury-variant-radio');
-          if (radio && !radio.checked) {
-            radio.checked = true;
-            updateVariant();
-          }
-        }
-      });
 
-      // Quantity buttons
-      document.addEventListener('click', function(e) {
-        var up = e.target.closest('#pdp-qty-up, .quantity-up');
-        if (up) {
-          e.preventDefault();
-          var input = document.getElementById('input-quantity');
-          if (input) {
-            var cur = parseInt(input.value, 10) || 1;
-            input.value = cur + 1;
-          }
-        }
-        var down = e.target.closest('#pdp-qty-down, .quantity-down');
-        if (down) {
-          e.preventDefault();
-          var input = document.getElementById('input-quantity');
-          if (input) {
-            var cur = parseInt(input.value, 10) || 1;
-            if (cur > 1) input.value = cur - 1;
-          }
-        }
-      });
+      // 4. Quantity Stepper
+      var qtyUp = document.getElementById('pdp-qty-up');
+      var qtyDown = document.getElementById('pdp-qty-down');
+      var qtyInput = document.getElementById('input-quantity');
 
-      // Add to Cart & Buy Now interception with capturing phase to preempt legacy handlers
+      if (qtyUp && qtyInput) {
+        qtyUp.addEventListener('click', function(e) {
+          e.preventDefault();
+          var cur = parseInt(qtyInput.value, 10) || 1;
+          if (cur < 99) qtyInput.value = cur + 1;
+        });
+      }
+
+      if (qtyDown && qtyInput) {
+        qtyDown.addEventListener('click', function(e) {
+          e.preventDefault();
+          var cur = parseInt(qtyInput.value, 10) || 1;
+          if (cur > 1) qtyInput.value = cur - 1;
+        });
+      }
+
+      // 5. Add to Cart & Buy Now Action Listeners (Capturing Phase)
       document.addEventListener('click', function(e) {
-        var addBtn = e.target.closest('.button-add-to-cart, [data-action="add-to-cart"]');
-        if (addBtn) {
+        var targetAdd = e.target.closest('#pdp-add-to-cart, .button-add-to-cart');
+        if (targetAdd) {
           e.preventDefault();
           e.stopPropagation();
           e.stopImmediatePropagation();
           var vId = variantInput ? variantInput.value : (variants[0] ? variants[0].id : null);
           if (!vId) return;
-          var qtyInput = document.getElementById('input-quantity');
           var q = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
           if (window.ShopifyCart) {
-            window.ShopifyCart.addItem(vId, q, { button: addBtn });
-          } else {
-            console.error('ShopifyCart not ready');
+            window.ShopifyCart.addItem(vId, q, { button: targetAdd });
           }
           return;
         }
 
-        var buyBtn = e.target.closest('.button-buy-now, [data-action="buy-now"]');
-        if (buyBtn) {
+        var targetBuy = e.target.closest('#pdp-buy-now, .button-buy-now');
+        if (targetBuy) {
           e.preventDefault();
           e.stopPropagation();
           e.stopImmediatePropagation();
           var vId = variantInput ? variantInput.value : (variants[0] ? variants[0].id : null);
           if (!vId) return;
-          var qtyInput = document.getElementById('input-quantity');
           var q = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
           if (window.ShopifyCart) {
-            window.ShopifyCart.addItem(vId, q, { button: buyBtn, buyNow: true });
-          } else {
-            console.error('ShopifyCart not ready');
+            window.ShopifyCart.addItem(vId, q, { button: targetBuy, buyNow: true });
           }
           return;
         }
       }, true);
+
+      // 6. Recently Viewed Tracking & Rendering
+      try {
+        var currentHandle = document.querySelector('[data-current-handle]')?.getAttribute('data-current-handle');
+        if (currentHandle) {
+          var STORAGE_KEY = 'brood_recently_viewed';
+          var stored = [];
+          try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            stored = raw ? JSON.parse(raw) : [];
+          } catch (err) {}
+          if (!Array.isArray(stored)) stored = [];
+          stored = stored.filter(function(h) { return h && h !== currentHandle; });
+          stored.unshift(currentHandle);
+          if (stored.length > 8) stored = stored.slice(0, 8);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+
+          var otherHandles = stored.filter(function(h) { return h !== currentHandle; });
+          if (otherHandles.length > 0) {
+            fetch('/api/products?first=12')
+              .then(function(res) { return res.json(); })
+              .then(function(data) {
+                if (!data || !data.htmlCards) return;
+                var recentSection = document.getElementById('prestige-recent-section');
+                var recentGrid = document.getElementById('prestige-recent-grid');
+                if (recentSection && recentGrid) {
+                  var parser = new DOMParser();
+                  var doc = parser.parseFromString('<div id="wrap">' + data.htmlCards + '</div>', 'text/html');
+                  var items = doc.querySelectorAll('.product-item');
+                  var fragment = document.createDocumentFragment();
+                  items.forEach(function(item) {
+                    var card = item.querySelector('[data-handle]');
+                    var h = card ? card.getAttribute('data-handle') : null;
+                    if (h && otherHandles.indexOf(h) !== -1) {
+                      fragment.appendChild(item.cloneNode(true));
+                    }
+                  });
+                  if (fragment.children.length > 0) {
+                    recentGrid.innerHTML = '';
+                    recentGrid.appendChild(fragment);
+                    recentSection.style.display = 'block';
+                  }
+                }
+              })
+              .catch(function(e) {});
+          }
+        }
+      } catch (e) {}
 
       updateVariant();
     })();
     </script>
   `;
 
-  html = html.replace('</body>', `${renderCartDrawerHtml()}\n${pdpScript}\n</body>`);
+  html = html.replace('</body>', `${renderCartDrawerHtml()}\n${pdpClientScript}\n</body>`);
 
   return html;
 }
@@ -1758,9 +2520,17 @@ export function buildShopifyFilterQuery(filters: ShopFilterParams): string {
     glasses: 'Eyewear',
     bags: 'Bags',
     bag: 'Bags',
+    handbags: 'Bags',
     jewellery: 'Jewellery',
     jewelry: 'Jewellery',
     accessories: 'Accessories',
+    'fashion-accessories': 'Accessories',
+    'leather-goods': 'Leather Goods',
+    'small-leather-goods': 'Leather Goods',
+    lifestyle: 'Lifestyle Accessories',
+    'lifestyle-accessories': 'Lifestyle Accessories',
+    clothing: 'Clothing',
+    apparel: 'Clothing',
   };
 
   const rawCat = (filters.category || '').toLowerCase().trim();
@@ -3006,6 +3776,76 @@ export function renderCartDrawerHtml(): string {
     }
   }, true);
 
+  // Delegated click listeners for Prestige Quick-Add actions in capture phase
+  document.addEventListener('click', function(e) {
+    // 1. Single variant quick-add
+    var singleBtn = e.target.closest('[data-quick-add-single]');
+    if (singleBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      var variantId = singleBtn.getAttribute('data-variant-id');
+      if (variantId && window.ShopifyCart) {
+        window.ShopifyCart.addItem(variantId, 1, { button: singleBtn });
+      }
+      return;
+    }
+
+    // 2. Multi-variant quick-add toggle drawer
+    var toggleBtn = e.target.closest('[data-quick-add-toggle]');
+    if (toggleBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      var handle = toggleBtn.getAttribute('data-handle');
+      var drawer = handle ? document.getElementById('quick-variants-' + handle) : null;
+      if (drawer) {
+        var isOpen = drawer.classList.contains('is-open');
+        // Close any other open variant drawers
+        document.querySelectorAll('.prestige-quick-variants-drawer.is-open').forEach(function(d) {
+          d.classList.remove('is-open');
+        });
+        if (!isOpen) {
+          drawer.classList.add('is-open');
+        }
+      }
+      return;
+    }
+
+    // 3. Close variant drawer button
+    var closeBtn = e.target.closest('[data-quick-variants-close]');
+    if (closeBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      var drawer = closeBtn.closest('.prestige-quick-variants-drawer');
+      if (drawer) drawer.classList.remove('is-open');
+      return;
+    }
+
+    // 4. Quick add specific variant from drawer
+    var variantBtn = e.target.closest('[data-quick-add-variant]');
+    if (variantBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      var variantId = variantBtn.getAttribute('data-quick-add-variant');
+      var drawer = variantBtn.closest('.prestige-quick-variants-drawer');
+      if (drawer) drawer.classList.remove('is-open');
+      if (variantId && window.ShopifyCart) {
+        window.ShopifyCart.addItem(variantId, 1, { button: variantBtn });
+      }
+      return;
+    }
+
+    // 5. Outside click closes all open variant drawers
+    if (!e.target.closest('.prestige-quick-variants-drawer') && !e.target.closest('[data-quick-add-toggle]')) {
+      document.querySelectorAll('.prestige-quick-variants-drawer.is-open').forEach(function(d) {
+        d.classList.remove('is-open');
+      });
+    }
+  }, true);
+
   // Sync across tabs via storage event
   window.addEventListener('storage', function(e) {
     if (e.key === 'shopify_wishlist') {
@@ -3039,6 +3879,1045 @@ export function renderCartDrawerHtml(): string {
 }
 .wishlist-heart-btn:hover {
   transform: scale(1.12);
+}
+
+/* ==========================================================================
+   PRESTIGE ALLURE PRODUCT CARD STYLES
+   ========================================================================== */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+.prestige-product-card {
+  background: #ffffff;
+  border: none !important;
+  box-shadow: none !important;
+  margin-bottom: 32px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.prestige-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: #f8f8f8;
+  overflow: hidden;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.prestige-card-image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  text-decoration: none;
+}
+.prestige-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 16px;
+  display: block;
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.prestige-primary-img {
+  position: relative;
+  opacity: 1;
+}
+.prestige-secondary-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .prestige-product-card:hover .prestige-primary-img.has-secondary {
+    opacity: 0;
+  }
+  .prestige-product-card:hover .prestige-secondary-img {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  .prestige-product-card:hover .prestige-primary-img:not(.has-secondary) {
+    transform: scale(1.04);
+  }
+  .prestige-product-card:hover .prestige-quick-add-btn {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+.prestige-card-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 4;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  line-height: 1;
+  pointer-events: none;
+}
+.badge--sale, .prestige-badge-sale {
+  background: #000000;
+  color: #ffffff;
+}
+.badge--new, .prestige-badge-new {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+.badge--soldout, .prestige-badge-soldout {
+  background: #666666;
+  color: #ffffff;
+}
+.prestige-wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1), background 0.2s ease, box-shadow 0.2s ease;
+}
+.prestige-wishlist-btn:hover {
+  transform: scale(1.08);
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+.prestige-quick-add-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+@media (hover: none) or (max-width: 768px) {
+  .prestige-quick-add-btn {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+  }
+}
+.prestige-quick-add-btn:hover {
+  background: #222222;
+  transform: scale(1.08);
+}
+.prestige-quick-variants-drawer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
+  padding: 12px 14px;
+  z-index: 10;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  transform: translateY(105%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+}
+.prestige-quick-variants-drawer.is-open {
+  transform: translateY(0);
+}
+.prestige-quick-variants-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.prestige-quick-variants-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #222;
+}
+.prestige-quick-variants-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #666;
+  padding: 0 4px;
+}
+.prestige-quick-variants-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.prestige-variant-pill {
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #111;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.prestige-variant-pill:hover {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+.prestige-variant-pill.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  pointer-events: none;
+}
+.prestige-card-info {
+  padding: 12px 2px 4px;
+  text-align: left;
+}
+.prestige-card-vendor {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 4px;
+}
+.prestige-card-title {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #111;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.prestige-card-title a {
+  color: #111;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+.prestige-card-title a:hover {
+  opacity: 0.7;
+}
+.prestige-card-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+}
+.prestige-price-current {
+  font-weight: 700;
+  color: #111;
+}
+.prestige-price-compare {
+  font-size: 12px;
+  color: #888;
+  text-decoration: line-through;
+}
+.prestige-card-swatches {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+}
+.prestige-card-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  display: inline-block;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  cursor: default;
+}
+.prestige-card-swatch:hover {
+  transform: scale(1.25);
+}
+.prestige-card-swatch-more {
+  font-size: 10px;
+  font-weight: 600;
+  color: #888;
+  margin-left: 2px;
+}
+.prestige-card-col {
+  box-sizing: border-box;
+}
+#shop-product-grid {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   PRESTIGE ALLURE PRODUCT DETAIL PAGE (PDP) STYLES
+   ========================================================================== */
+.brood-pdp-main-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.prestige-pdp-container {
+  color: #111;
+}
+.prestige-breadcrumbs {
+  padding: 18px 0 24px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #888;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.prestige-breadcrumbs a {
+  color: #888;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.prestige-breadcrumbs a:hover {
+  color: #111;
+}
+.prestige-breadcrumbs .bc-sep {
+  color: #ccc;
+}
+.prestige-breadcrumbs .bc-current {
+  color: #111;
+  font-weight: 600;
+}
+.prestige-pdp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+}
+.prestige-gallery-col {
+  position: relative;
+}
+.prestige-gallery-sticky {
+  position: sticky;
+  top: 90px;
+}
+.prestige-main-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: #f8f8f8;
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.prestige-main-slide {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+.prestige-main-slide.is-active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.prestige-zoom-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-in;
+  overflow: hidden;
+  position: relative;
+}
+.prestige-pdp-main-img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, transform-origin;
+}
+.prestige-zoom-trigger {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 5;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+}
+.prestige-zoom-trigger:hover {
+  transform: scale(1.08);
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.14);
+}
+.prestige-thumbs-strip {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.prestige-thumb-item {
+  width: 72px;
+  height: 90px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  border: 1.5px solid transparent;
+  background: #f8f8f8;
+  padding: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.prestige-thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.prestige-thumb-item.is-active,
+.prestige-thumb-item:hover {
+  border-color: #111;
+}
+.prestige-info-col {
+  padding-left: 12px;
+}
+.prestige-info-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.prestige-vendor-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #777;
+}
+.prestige-stock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.prestige-stock-badge.in-stock {
+  color: #15803d;
+}
+.prestige-stock-badge.out-of-stock {
+  color: #dc2626;
+}
+.prestige-stock-badge .stock-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.prestige-stock-badge.in-stock .stock-dot {
+  background: #16a34a;
+}
+.prestige-stock-badge.out-of-stock .stock-dot {
+  background: #dc2626;
+}
+.prestige-product-title {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: #111;
+  margin: 0 0 16px;
+}
+.prestige-price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+.prestige-current-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+}
+.prestige-compare-price {
+  font-size: 16px;
+  color: #888;
+  text-decoration: line-through;
+}
+.prestige-discount-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  background: #111;
+  color: #fff;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.prestige-variants-section {
+  margin-bottom: 24px;
+}
+.prestige-opt-group {
+  margin-bottom: 18px;
+}
+.prestige-opt-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #333;
+  margin-bottom: 10px;
+}
+.prestige-opt-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.prestige-opt-item {
+  position: relative;
+  cursor: pointer;
+  margin: 0;
+}
+.prestige-opt-item input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.prestige-opt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 42px;
+  padding: 0 16px;
+  border: 1.5px solid #dcdcdc;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+  border-radius: 2px;
+  transition: all 0.18s ease;
+}
+.prestige-opt-item:hover .prestige-opt-btn {
+  border-color: #111;
+}
+.prestige-opt-item input[type="radio"]:checked + .prestige-opt-btn {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+.prestige-opt-btn.disabled {
+  opacity: 0.35;
+  text-decoration: line-through;
+  pointer-events: none;
+  background: #f5f5f5;
+}
+.prestige-qty-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.prestige-qty-heading {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #333;
+}
+.prestige-qty-controls {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #dcdcdc;
+  border-radius: 2px;
+  height: 42px;
+}
+.prestige-qty-btn {
+  width: 38px;
+  height: 100%;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+.prestige-qty-btn:hover {
+  background: #f0f0f0;
+}
+.prestige-qty-field {
+  width: 44px;
+  height: 100%;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  background: transparent;
+}
+.prestige-actions-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.prestige-btn-primary {
+  width: 100%;
+  height: 52px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.prestige-btn-primary:hover {
+  background: #000;
+}
+.prestige-btn-primary:active {
+  transform: scale(0.99);
+}
+.prestige-btn-secondary {
+  width: 100%;
+  height: 52px;
+  background: #fff;
+  color: #111;
+  border: 1.5px solid #111;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.prestige-btn-secondary:hover {
+  background: #111;
+  color: #fff;
+}
+.prestige-btn-wishlist {
+  width: 100%;
+  height: 46px;
+  background: transparent;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.18s ease;
+}
+.prestige-btn-wishlist:hover {
+  border-color: #111;
+  color: #111;
+}
+.prestige-trust-features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 24px;
+}
+.trust-feat-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.trust-feat-item svg {
+  flex-shrink: 0;
+  color: #111;
+  margin-top: 2px;
+}
+.trust-feat-item strong {
+  display: block;
+  font-weight: 700;
+  color: #111;
+}
+.trust-feat-item span {
+  color: #666;
+}
+.prestige-accordion-stack {
+  display: flex;
+  flex-direction: column;
+}
+.prestige-acc-item {
+  border-bottom: 1px solid #eee;
+}
+.prestige-acc-item summary {
+  list-style: none;
+  outline: none;
+}
+.prestige-acc-item summary::-webkit-details-marker {
+  display: none;
+}
+.prestige-acc-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111;
+  transition: color 0.15s ease;
+}
+.prestige-acc-trigger:hover {
+  color: #444;
+}
+.acc-icon {
+  font-size: 18px;
+  font-weight: 400;
+  color: #888;
+  transition: transform 0.2s ease;
+}
+.prestige-acc-item[open] .acc-icon {
+  transform: rotate(45deg);
+}
+.prestige-acc-content {
+  padding: 0 0 18px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #555;
+}
+.prestige-acc-content ul {
+  margin: 8px 0 0 18px;
+  padding: 0;
+}
+.prestige-acc-content li {
+  margin-bottom: 6px;
+}
+.prestige-specs-table, .prestige-size-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.prestige-specs-table th, .prestige-specs-table td,
+.prestige-size-table th, .prestige-size-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+.prestige-specs-table th, .prestige-size-table th {
+  font-weight: 600;
+  color: #111;
+  width: 35%;
+}
+.prestige-specs-table td, .prestige-size-table td {
+  color: #555;
+}
+.prestige-recommendations-section, .prestige-recently-viewed-section {
+  margin-top: 72px;
+}
+.prestige-section-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.prestige-section-subtitle {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 6px;
+}
+.prestige-section-heading {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #111;
+  margin: 0;
+}
+.prestige-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100000;
+  background: rgba(0,0,0,0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.prestige-lightbox.is-open {
+  display: flex;
+}
+.prestige-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 36px;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 10;
+  transition: transform 0.2s ease;
+}
+.prestige-lightbox-close:hover {
+  transform: scale(1.15);
+}
+.prestige-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #fff;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.prestige-lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-50%) scale(1.08);
+}
+.prestige-lightbox-nav.prev {
+  left: 24px;
+}
+.prestige-lightbox-nav.next {
+  right: 24px;
+}
+.prestige-lightbox-counter {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 14px;
+  border-radius: 20px;
+  pointer-events: none;
+}
+.prestige-lightbox-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#pdp-lightbox-img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.prestige-mobile-gallery-stacked {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .prestige-pdp-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+@media (max-width: 768px) {
+  .brood-pdp-main-wrapper {
+    padding: 0 16px 60px;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  .prestige-pdp-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  .prestige-pdp-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .prestige-gallery-col {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .prestige-desktop-gallery {
+    display: none;
+  }
+  .prestige-mobile-gallery-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .prestige-mobile-media-item {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background: #f8f8f8;
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .prestige-mobile-media-item img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+  }
+  .prestige-mobile-zoom-pill {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(4px);
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  .prestige-gallery-sticky {
+    position: static;
+  }
+  .prestige-info-col {
+    padding-left: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .prestige-product-title {
+    font-size: 22px;
+    word-break: break-word;
+  }
+  .prestige-breadcrumbs {
+    padding: 12px 0 16px;
+    font-size: 10px;
+    word-break: break-word;
+  }
+  .prestige-specs-table, .prestige-size-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .prestige-quick-add-btn {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .prestige-recommendations-section, .prestige-recently-viewed-section {
+    margin-top: 48px;
+  }
+  .prestige-lightbox-nav {
+    width: 38px;
+    height: 38px;
+  }
+  .prestige-lightbox-nav.prev {
+    left: 8px;
+  }
+  .prestige-lightbox-nav.next {
+    right: 8px;
+  }
+}
+@media (max-width: 390px) {
+  .brood-pdp-main-wrapper {
+    padding: 0 12px 48px;
+  }
+  .prestige-product-title {
+    font-size: 19px;
+  }
+  .prestige-btn-primary, .prestige-btn-secondary {
+    height: 48px;
+    font-size: 12px;
+  }
+  .prestige-current-price {
+    font-size: 20px;
+  }
 }
 </style>
 `;

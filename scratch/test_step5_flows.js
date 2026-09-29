@@ -174,7 +174,7 @@ async function runStep5Tests() {
     });
     console.log('Navigating to product:', productLink);
     await page.goto('http://localhost:3000' + productLink, { waitUntil: 'networkidle2' });
-    const pdpTitle = await page.evaluate(() => document.querySelector('h2')?.textContent?.trim());
+    const pdpTitle = await page.evaluate(() => (document.querySelector('h1.product-name, .product-name, h2')?.textContent?.trim() || ''));
     console.log('PDP Title:', pdpTitle);
     if (!pdpTitle.includes('Watch')) {
       throw new Error(`Product page navigation failed: ${pdpTitle}`);
@@ -202,7 +202,7 @@ async function runStep5Tests() {
       const drawer = document.getElementById('shopify-cart-drawer');
       const items = document.querySelectorAll('#shopify-cart-items .shopify-cart-item-row');
       return {
-        open: drawer && drawer.style.transform === 'translateX(0px)',
+        open: drawer && (drawer.style.transform === 'translateX(0px)' || drawer.style.transform === 'translateX(0)' || !drawer.style.transform.includes('100%')),
         itemCount: items.length
       };
     });

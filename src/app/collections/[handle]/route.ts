@@ -8,6 +8,7 @@ import {
   renderErrorState,
   parseSortParam,
   parseFilterParams,
+  CATALOG_COLLECTION_REGISTRY,
 } from "@/lib/shopify";
 
 export const dynamic = "force-dynamic";
@@ -52,8 +53,34 @@ export async function GET(
   }
 
   if (!collectionRes.collection) {
+    const registryEntry = CATALOG_COLLECTION_REGISTRY[handle];
+    if (registryEntry) {
+      const plannedCollection = {
+        id: `gid://shopify/Collection/planned-${handle}`,
+        title: registryEntry.title,
+        handle: registryEntry.handle,
+        description: registryEntry.subtitle,
+        products: {
+          edges: [],
+        },
+      };
+      const html = renderCollectionHtml(
+        templateHtml,
+        plannedCollection,
+        allCollectionsRes.collections,
+        activeSort,
+        filters
+      );
+      return new Response(html, {
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+        },
+      });
+    }
+
     const notFoundPage = templateHtml
-      .replace(/<title>.*?<\/title>/i, `<title>Collection Not Found - TheHoshi</title>`)
+      .replace(/<title>.*?<\/title>/i, `<title>Collection Not Found - HOSHI</title>`)
       .replace(
         /<h3 class="home-featured-main-title">[\s\S]*?<\/h3>/i,
         `<h3 class="home-featured-main-title">COLLECTION NOT FOUND</h3>`

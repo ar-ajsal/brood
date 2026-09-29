@@ -2,8 +2,7 @@ import fs from "fs";
 import path from "path";
 import {
   getProducts,
-  renderTemplateProductCard,
-  renderTemplateCarouselItem,
+  renderShopProductCard,
   renderEmptyState,
   renderErrorState,
   renderCartDrawerHtml,
@@ -16,23 +15,35 @@ export async function GET() {
   const filePath = path.join(process.cwd(), "src/templates/home.html");
   let html = fs.readFileSync(filePath, "utf8");
 
-  // Fetch real Shopify products
-  const { products, error } = await getProducts(20);
+  // Fetch live Shopify products in parallel:
+  // 1. New Arrivals: latest created products
+  // 2. Best Sellers / Featured: top selling catalog items
+  const [newArrivalsRes, bestSellersRes] = await Promise.all([
+    getProducts({ first: 8, sortKey: "CREATED_AT", reverse: true }),
+    getProducts({ first: 8, sortKey: "BEST_SELLING", reverse: false }),
+  ]);
 
-  if (error) {
-    html = html.replace("<!-- SHOPIFY_PRODUCTS_GRID -->", renderErrorState(error));
-    html = html.replace("<!-- SHOPIFY_CAROUSEL_PRODUCTS -->", "");
-  } else if (!products || products.length === 0) {
-    html = html.replace("<!-- SHOPIFY_PRODUCTS_GRID -->", renderEmptyState());
-    html = html.replace("<!-- SHOPIFY_CAROUSEL_PRODUCTS -->", "");
+  // Handle New Arrivals
+  if (newArrivalsRes.error) {
+    html = html.replace("<!-- SHOPIFY_NEW_ARRIVALS -->", renderErrorState(newArrivalsRes.error));
+  } else if (!newArrivalsRes.products || newArrivalsRes.products.length === 0) {
+    html = html.replace("<!-- SHOPIFY_NEW_ARRIVALS -->", renderEmptyState("No new arrivals found."));
   } else {
-    const gridCards = products.map((p) => renderTemplateProductCard(p)).join("\n");
-    const carouselCards = products.map((p) => renderTemplateCarouselItem(p)).join("\n");
-
-    html = html.replace("<!-- SHOPIFY_PRODUCTS_GRID -->", gridCards);
-    html = html.replace("<!-- SHOPIFY_CAROUSEL_PRODUCTS -->", carouselCards);
+    const newArrivalCards = newArrivalsRes.products.map((p) => renderShopProductCard(p)).join("\n");
+    html = html.replace("<!-- SHOPIFY_NEW_ARRIVALS -->", newArrivalCards);
   }
 
+  // Handle Best Sellers / Featured
+  if (bestSellersRes.error) {
+    html = html.replace("<!-- SHOPIFY_BEST_SELLERS -->", renderErrorState(bestSellersRes.error));
+  } else if (!bestSellersRes.products || bestSellersRes.products.length === 0) {
+    html = html.replace("<!-- SHOPIFY_BEST_SELLERS -->", renderEmptyState("No best sellers available."));
+  } else {
+    const bestSellerCards = bestSellersRes.products.map((p) => renderShopProductCard(p)).join("\n");
+    html = html.replace("<!-- SHOPIFY_BEST_SELLERS -->", bestSellerCards);
+  }
+
+  // Inject global Cart Drawer & Wishlist subsystem into </body>
   html = html.replace("</body>", `${renderCartDrawerHtml()}\n</body>`);
 
   return new Response(html, {

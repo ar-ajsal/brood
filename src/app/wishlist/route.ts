@@ -83,37 +83,114 @@ export async function GET() {
         var hasComp = compPrice && parseFloat(compPrice.amount) > parseFloat(minPrice.amount);
         var compFmt = hasComp ? formatPriceIn(compPrice.amount, compPrice.currencyCode) : null;
         var img = (p.images && p.images.edges && p.images.edges[0] && p.images.edges[0].node && p.images.edges[0].node.url) || 'https://thehoshi.to/image/cache/catalog/app/banner/800-100x100.jpg';
-        var link = '/products/' + p.handle;
-        var availVar = (p.variants && p.variants.edges && p.variants.edges.find(function(e) { return e.node.availableForSale; })) || (p.variants && p.variants.edges && p.variants.edges[0]);
-        var varId = availVar ? availVar.node.id : '';
-        var isAvail = p.availableForSale && !!availVar;
+        var secImg = (p.images && p.images.edges && p.images.edges[1] && p.images.edges[1].node && p.images.edges[1].node.url) || null;
+        if (!secImg && p.variants && p.variants.edges) {
+          var altV = p.variants.edges.find(function(e) { return e.node && e.node.image && e.node.image.url && e.node.image.url !== img; });
+          if (altV && altV.node && altV.node.image) secImg = altV.node.image.url;
+        }
 
-        return '<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 product-item wishlist-item" data-wishlist-item="' + p.handle + '" style="margin-bottom:24px;transition:all 0.3s ease;">' +
-          '<div class="product-thumb group flex flex-col h-full bg-white dark:bg-surface-dark transition-all duration-300" style="position:relative;border:1px solid #eee;padding:12px;border-radius:4px;">' +
-            '<button type="button" class="wishlist-remove-btn" data-wishlist-remove data-handle="' + p.handle + '" title="Remove from Wishlist" aria-label="Remove from Wishlist" style="position:absolute;top:16px;right:16px;z-index:10;width:28px;height:28px;border-radius:50%;background:#fff;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#888;box-shadow:0 1px 4px rgba(0,0,0,0.08);transition:all 0.2s;">✕</button>' +
-            '<div class="image relative aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden rounded-sm mb-2">' +
-              '<a href="' + link + '" class="block w-full h-full">' +
-                '<img src="' + img + '" alt="' + p.title + '" class="w-full h-full object-cover bg-white" />' +
+        var link = '/products/' + p.handle;
+        var variants = (p.variants && p.variants.edges && p.variants.edges.map(function(e) { return e.node; })) || [];
+        var realOptions = (p.options || []).filter(function(o) {
+          return o.name !== 'Title' || (o.values.length > 1 || o.values[0] !== 'Default Title');
+        });
+        var isSingleVar = variants.length <= 1 || realOptions.length === 0;
+        var defaultVar = variants.find(function(v) { return v.availableForSale; }) || variants[0];
+        var defaultVarId = defaultVar ? defaultVar.id : '';
+        var isSoldOut = !p.availableForSale;
+
+        // Badge
+        var badgeHtml = '';
+        if (isSoldOut) {
+          badgeHtml = '<span class="prestige-card-badge badge--soldout prestige-badge-soldout" aria-label="Sold out">Sold Out</span>';
+        } else if (hasComp) {
+          var cur = parseFloat(minPrice.amount);
+          var orig = parseFloat(compPrice.amount);
+          var pct = Math.round(((orig - cur) / orig) * 100);
+          badgeHtml = '<span class="prestige-card-badge badge--sale prestige-badge-sale" aria-label="On sale: -' + pct + '%">' + (pct > 0 ? '-' + pct + '%' : 'Sale') + '</span>';
+        }
+
+        // Color swatches
+        var colorOpt = (p.options || []).find(function(o) {
+          var n = (o.name || '').toLowerCase();
+          return n === 'color' || n === 'colour';
+        });
+        var swatchesHtml = '';
+        if (colorOpt && colorOpt.values && colorOpt.values.length > 0) {
+          var colorMap = {
+            black: '#111111', white: '#fcfcfc', grey: '#888888', gray: '#888888',
+            navy: '#0f1c3f', blue: '#1e3a8a', brown: '#6e473b', tan: '#d2b48c',
+            beige: '#f5f5dc', gold: '#d4af37', silver: '#c0c0c0', green: '#1b4332',
+            red: '#b91c1c', yellow: '#eab308', orange: '#ea580c', pink: '#f472b6'
+          };
+          var dots = colorOpt.values.slice(0, 5).map(function(val) {
+            var hex = colorMap[val.toLowerCase().trim()] || val.toLowerCase().trim();
+            return '<span class="prestige-card-swatch" style="background-color:' + hex + ';" title="' + val + '"></span>';
+          }).join('');
+          var moreCount = colorOpt.values.length - 5;
+          var morePill = moreCount > 0 ? '<span class="prestige-card-swatch-more">+' + moreCount + '</span>' : '';
+          swatchesHtml = '<div class="prestige-card-swatches" aria-label="Color options">' + dots + morePill + '</div>';
+        }
+
+        // Quick add
+        var quickAddHtml = '';
+        if (!isSoldOut) {
+          if (isSingleVar) {
+            quickAddHtml = '<button type="button" class="prestige-quick-add-btn" data-quick-add-single data-variant-id="' + defaultVarId + '" data-handle="' + p.handle + '" title="Quick Add to Bag" aria-label="Quick Add to Bag">' +
+              '<svg class="plus-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">' +
+                '<line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>' +
+              '</svg>' +
+            '</button>';
+          } else {
+            var optName = realOptions[0] ? realOptions[0].name : 'Size';
+            var pillBtns = variants.map(function(v) {
+              var optVal = (v.selectedOptions && v.selectedOptions[0] && v.selectedOptions[0].value) || v.title;
+              if (!v.availableForSale) {
+                return '<button type="button" class="prestige-variant-pill disabled" disabled title="Out of stock">' + optVal + '</button>';
+              }
+              return '<button type="button" class="prestige-variant-pill" data-quick-add-variant="' + v.id + '" data-handle="' + p.handle + '" title="Add ' + optVal + ' to cart">' + optVal + '</button>';
+            }).join('');
+
+            quickAddHtml = '<button type="button" class="prestige-quick-add-btn" data-quick-add-toggle data-handle="' + p.handle + '" title="Select ' + optName + '" aria-label="Select ' + optName + '">' +
+              '<svg class="plus-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">' +
+                '<line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>' +
+              '</svg>' +
+            '</button>' +
+            '<div class="prestige-quick-variants-drawer" id="quick-variants-' + p.handle + '">' +
+              '<div class="prestige-quick-variants-header">' +
+                '<span class="prestige-quick-variants-title">Select ' + optName + '</span>' +
+                '<button type="button" class="prestige-quick-variants-close" data-quick-variants-close aria-label="Close variant selector">&times;</button>' +
+              '</div>' +
+              '<div class="prestige-quick-variants-pills">' + pillBtns + '</div>' +
+            '</div>';
+          }
+        }
+
+        return '<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 product-item prestige-card-col wishlist-item" data-wishlist-item="' + p.handle + '" style="margin-bottom:24px;transition:all 0.3s ease;">' +
+          '<div class="product-thumb prestige-product-card group" data-handle="' + p.handle + '" data-product-id="' + p.id + '">' +
+            '<div class="image prestige-card-media">' +
+              badgeHtml +
+              '<button type="button" class="prestige-wishlist-btn wishlist-remove-btn is-active active" data-wishlist-remove data-handle="' + p.handle + '" title="Remove from Wishlist" aria-label="Remove from Wishlist">' +
+                '<svg class="heart-icon" width="15" height="15" viewBox="0 0 24 24" fill="#e53e3e" stroke="#e53e3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                  '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>' +
+                '</svg>' +
+              '</button>' +
+              '<a href="' + link + '" class="prestige-card-image-link" aria-label="' + p.title + '">' +
+                '<img src="' + img + '" alt="' + p.title + '" title="' + p.title + '" loading="lazy" decoding="async" class="prestige-card-img prestige-primary-img ' + (secImg ? 'has-secondary' : '') + '" />' +
+                (secImg ? '<img src="' + secImg + '" alt="' + p.title + '" title="' + p.title + '" loading="lazy" decoding="async" class="prestige-card-img prestige-secondary-img" />' : '') +
               '</a>' +
+              quickAddHtml +
             '</div>' +
-            '<div class="caption text-center flex flex-col px-0.5" style="flex:1;display:flex;flex-direction:column;justify-content:space-between;">' +
-              '<div>' +
-                '<div style="margin-bottom:4px;">' +
-                  (isAvail ? '<span style="font-size:10px;font-weight:700;letter-spacing:0.05em;color:#137333;background:#e6f4ea;padding:2px 6px;border-radius:2px;text-transform:uppercase;">In Stock</span>' : '<span style="font-size:10px;font-weight:700;letter-spacing:0.05em;color:#c5221f;background:#fce8e6;padding:2px 6px;border-radius:2px;text-transform:uppercase;">Out of Stock</span>') +
-                '</div>' +
-                '<h4 class="m-0 p-0" style="min-height:32px;">' +
-                  '<a class="product-name font-bold text-[11px] md:text-sm text-gray-800 dark:text-gray-300 uppercase tracking-[0.05em] leading-[1.3] line-clamp-2 block" href="' + link + '">' + p.title + '</a>' +
-                '</h4>' +
-                '<div class="price-wrapper mt-1">' +
-                  '<span class="price-new font-bold text-sm" style="color:#111;">' + pFmt + '</span>' +
-                  (compFmt ? '<span class="price-old text-xs text-gray-400 line-through ml-2">' + compFmt + '</span>' : '') +
-                '</div>' +
+            '<div class="caption prestige-card-info">' +
+              '<div class="prestige-card-vendor">' + (p.vendor || 'BROOD') + '</div>' +
+              '<h3 class="name prestige-card-title m-0 p-0">' +
+                '<a class="product-name font-bold text-[11px] md:text-sm text-gray-800 dark:text-gray-300 uppercase tracking-[0.05em] leading-[1.3] line-clamp-2 block" href="' + link + '" title="' + p.title + '">' + p.title + '</a>' +
+              '</h3>' +
+              '<div class="price price-wrapper prestige-card-price-row mt-1">' +
+                '<span class="price-new prestige-price-current font-bold">' + pFmt + '</span>' +
+                (compFmt ? '<span class="price-old prestige-price-compare text-xs text-gray-400 line-through ml-2">' + compFmt + '</span>' : '') +
               '</div>' +
-              '<div style="margin-top:12px;">' +
-                (isAvail 
-                  ? '<button type="button" class="btn wishlist-add-to-cart-btn" data-variant-id="' + varId + '" style="width:100%;padding:8px 12px;background:#111;color:#fff;border:none;border-radius:2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:background 0.2s;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg><span>Add to Bag</span></button>'
-                  : '<button type="button" disabled style="width:100%;padding:8px 12px;background:#f0f0f0;color:#999;border:none;border-radius:2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;cursor:not-allowed;"><span>Out of Stock</span></button>') +
-              '</div>' +
+              swatchesHtml +
             '</div>' +
           '</div>' +
         '</div>';
@@ -125,7 +202,10 @@ export async function GET() {
         var gridEl = document.getElementById('wishlist-grid-box');
         var countEl = document.getElementById('wishlist-page-count');
 
-        if (!window.ShopifyWishlist) return;
+        if (!window.ShopifyWishlist) {
+          setTimeout(loadWishlistPage, 50);
+          return;
+        }
         var items = window.ShopifyWishlist.getItems();
         var handles = items.map(function(it) { return it.handle; }).filter(Boolean);
 

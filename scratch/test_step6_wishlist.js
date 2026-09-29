@@ -84,6 +84,7 @@ async function runWishlistTests() {
     // -------------------------------------------------------------------------
     console.log('\n--- 5. Refresh page ---');
     await page.reload({ waitUntil: 'networkidle2' });
+    await new Promise(r => setTimeout(r, 300));
 
     // -------------------------------------------------------------------------
     console.log('\n--- 6. Confirm wishlist persists across reload ---');

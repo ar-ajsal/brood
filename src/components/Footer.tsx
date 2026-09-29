@@ -66,32 +66,32 @@ export function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pb-12 border-b border-white/10 text-center">
             <div className="flex flex-col items-center">
               <span className="text-[#d4af37] text-2xl mb-2">✦</span>
-              <h4 className="text-white text-xs font-serif uppercase tracking-widest font-bold">1:1 Master Quality</h4>
-              <p className="text-[11px] text-gray-400 mt-1">Identical materials & exact craft</p>
+              <h4 className="text-white text-xs font-serif uppercase tracking-widest font-bold">Artisanal Design</h4>
+              <p className="text-[11px] text-gray-400 mt-1">Curated silhouettes &amp; enduring forms</p>
             </div>
             <div className="flex flex-col items-center">
-              <span className="text-[#d4af37] text-2xl mb-2">✈</span>
-              <h4 className="text-white text-xs font-serif uppercase tracking-widest font-bold">Worldwide Express</h4>
-              <p className="text-[11px] text-gray-400 mt-1">Discreet & insured air transit</p>
+              <span className="text-[#d4af37] text-2xl mb-2">✦</span>
+              <h4 className="text-white text-xs font-serif uppercase tracking-widest font-bold">Order Assistance</h4>
+              <p className="text-[11px] text-gray-400 mt-1">Dedicated support for your inquiries</p>
             </div>
             <div className="flex flex-col items-center">
               <span className="text-[#d4af37] text-2xl mb-2">🔒</span>
               <h4 className="text-white text-xs font-serif uppercase tracking-widest font-bold">Secure Checkout</h4>
-              <p className="text-[11px] text-gray-400 mt-1">Encrypted & private transactions</p>
+              <p className="text-[11px] text-gray-400 mt-1">Encrypted &amp; private transactions</p>
             </div>
             <div className="flex flex-col items-center">
               <span className="text-[#d4af37] text-2xl mb-2">★</span>
-              <h4 className="text-white text-xs font-serif uppercase tracking-widest font-bold">VIP After-Sales</h4>
-              <p className="text-[11px] text-gray-400 mt-1">Dedicated 24/7 personal concierge</p>
+              <h4 className="text-white text-xs font-serif uppercase tracking-widest font-bold">Client Concierge</h4>
+              <p className="text-[11px] text-gray-400 mt-1">Inquiries &amp; catalog consultations</p>
             </div>
           </div>
 
           {/* Links Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 py-12 border-b border-white/10">
             <div>
-              <span className="font-serif text-xl tracking-[0.2em] text-[#d4af37] font-bold block mb-4">THE HOSHI</span>
+              <span className="font-serif text-xl tracking-[0.2em] text-[#d4af37] font-bold block mb-4">BROOD</span>
               <p className="text-xs text-gray-400 leading-relaxed">
-                The leading bespoke luxury destination offering master quality handcrafted bags, accessories, and haute horlogerie.
+                Brood represents modern luxury design, bringing together sculpted footwear, precision timepieces, and curated accessories.
               </p>
             </div>
 
@@ -108,16 +108,16 @@ export function Footer() {
             <div>
               <h5 className="text-white font-serif uppercase text-xs tracking-widest font-bold mb-4">Customer Care</h5>
               <ul className="space-y-2 text-xs">
-                <li><a href="#" className="hover:text-[#d4af37] transition-colors">Quality Inspection (QC Photos)</a></li>
-                <li><a href="#" className="hover:text-[#d4af37] transition-colors">Worldwide Shipping Policies</a></li>
-                <li><a href="#" className="hover:text-[#d4af37] transition-colors">Custom Orders & Requests</a></li>
-                <li><a href="#" className="hover:text-[#d4af37] transition-colors">VIP Warranty & Guarantee</a></li>
+                <li><a href="/shop" className="hover:text-[#d4af37] transition-colors">Catalog Overview</a></li>
+                <li><a href="/shop" className="hover:text-[#d4af37] transition-colors">Shipping & Orders</a></li>
+                <li><a href="/shop" className="hover:text-[#d4af37] transition-colors">Atelier Inquiries</a></li>
+                <li><a href="/shop" className="hover:text-[#d4af37] transition-colors">Returns & Policies</a></li>
               </ul>
             </div>
 
             <div>
               <h5 className="text-white font-serif uppercase text-xs tracking-widest font-bold mb-4">Newsletter & Concierge</h5>
-              <p className="text-xs text-gray-400 mb-3">Subscribe to receive secret flash sale drops and VIP catalog updates.</p>
+              <p className="text-xs text-gray-400 mb-3">Subscribe to receive curated releases and atelier updates.</p>
               <div className="flex">
                 <input
                   type="email"
@@ -125,7 +125,7 @@ export function Footer() {
                   className="bg-[#222] text-white text-xs px-3 py-2 rounded-l focus:outline-none w-full"
                 />
                 <button
-                  onClick={() => alert("Thank you for joining our VIP list!")}
+                  onClick={() => alert("Thank you for joining our newsletter!")}
                   className="bg-[#d4af37] text-black text-xs font-bold px-3 py-2 rounded-r hover:bg-[#c39e2c]"
                 >
                   Join
@@ -136,11 +136,11 @@ export function Footer() {
 
           {/* Bottom Copyright */}
           <div className="pt-8 flex flex-col sm:flex-row justify-between items-center text-[11px] text-gray-500">
-            <p>© 2026 THE HOSHI. All rights reserved. Private Luxury Services.</p>
+            <p>© 2026 BROOD. All rights reserved.</p>
             <div className="flex space-x-4 mt-4 sm:mt-0">
               <span className="hover:text-gray-400 cursor-pointer">Privacy Policy</span>
               <span className="hover:text-gray-400 cursor-pointer">Terms of Service</span>
-              <span className="hover:text-gray-400 cursor-pointer">Discreet Delivery</span>
+              <span className="hover:text-gray-400 cursor-pointer">Order Information</span>
             </div>
           </div>
         </div>
