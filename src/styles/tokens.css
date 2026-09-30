@@ -1,0 +1,134 @@
+/* ============================================================
+   BROOD — DESIGN SYSTEM TOKENS
+   Cold Luxury | Monochrome | Chrome Accent
+   ============================================================ */
+
+:root {
+  /* ---- Color ---- */
+  --color-bg:           #ffffff;
+  --color-bg-soft:      #f7f7f7;
+  --color-bg-subtle:    #f0f0f0;
+  --color-surface:      #ffffff;
+  --color-surface-dim:  #f4f4f4;
+  --color-ink:          #0a0a0a;
+  --color-ink-2:        #1a1a1a;
+  --color-muted:        #6b6b6b;
+  --color-muted-2:      #9a9a9a;
+  --color-border:       #e2e2e2;
+  --color-border-strong:#b0b0b0;
+
+  /* Chrome / Silver accent */
+  --color-accent:       #8c8c96;
+  --color-accent-light: #c4c4cc;
+  --color-accent-dark:  #4a4a52;
+  --color-chrome:       linear-gradient(135deg, #c8c8d0 0%, #9898a4 40%, #d8d8e0 60%, #a0a0b0 100%);
+
+  /* Status */
+  --color-sale:         #c0392b;
+  --color-success:      #1a7a4a;
+  --color-new:          #0a0a0a;
+
+  /* ---- Typography ---- */
+  --font-display:  'Cabinet Grotesk', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body:     'Plus Jakarta Sans', 'Cabinet Grotesk', system-ui, sans-serif;
+  --font-mono:     'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Scale */
+  --text-xs:    0.6875rem;   /* 11px */
+  --text-sm:    0.8125rem;   /* 13px */
+  --text-base:  0.9375rem;   /* 15px */
+  --text-md:    1.0625rem;   /* 17px */
+  --text-lg:    1.25rem;     /* 20px */
+  --text-xl:    1.5rem;      /* 24px */
+  --text-2xl:   2rem;        /* 32px */
+  --text-3xl:   2.75rem;     /* 44px */
+  --text-4xl:   3.5rem;      /* 56px */
+  --text-5xl:   4.5rem;      /* 72px */
+  --text-6xl:   6rem;        /* 96px */
+
+  --leading-tight:  1.05;
+  --leading-snug:   1.2;
+  --leading-normal: 1.5;
+  --leading-loose:  1.7;
+
+  --tracking-tight:     -0.03em;
+  --tracking-snug:      -0.02em;
+  --tracking-normal:     0;
+  --tracking-wide:       0.06em;
+  --tracking-wider:      0.12em;
+  --tracking-widest:     0.18em;
+
+  /* ---- Spacing ---- */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+  --space-32:  128px;
+  --space-40:  160px;
+
+  /* Section rhythm */
+  --section-sm:  var(--space-16);
+  --section-md:  var(--space-24);
+  --section-lg:  var(--space-32);
+  --section-xl:  var(--space-40);
+
+  /* ---- Layout ---- */
+  --container-sm:   640px;
+  --container-md:   900px;
+  --container-lg:   1280px;
+  --container-xl:   1440px;
+  --container-pad:  clamp(16px, 4vw, 48px);
+
+  /* ---- Sizing ---- */
+  --header-h:          64px;
+  --header-h-scroll:   56px;
+  --nav-h:             48px;
+  --card-image-ratio:  4 / 5;
+  --btn-h:             48px;
+  --btn-h-sm:          38px;
+  --btn-h-lg:          56px;
+  --icon-sm:           16px;
+  --icon-md:           20px;
+  --icon-lg:           24px;
+
+  /* ---- Radius ---- */
+  /* Sharp system — cards have 0 radius, buttons have 2px, inputs 2px */
+  --radius-none:  0px;
+  --radius-xs:    2px;
+  --radius-sm:    4px;
+  --radius-md:    8px;
+  --radius-full:  9999px;
+
+  /* ---- Shadows ---- */
+  --shadow-xs:  0 1px 2px rgba(10,10,10,0.06);
+  --shadow-sm:  0 2px 8px rgba(10,10,10,0.08);
+  --shadow-md:  0 4px 24px rgba(10,10,10,0.10);
+  --shadow-lg:  0 8px 40px rgba(10,10,10,0.14);
+
+  /* ---- Motion ---- */
+  --ease-out:        cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:     cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast:        150ms;
+  --dur-base:        250ms;
+  --dur-slow:        400ms;
+  --dur-enter:       600ms;
+  --dur-page:        900ms;
+
+  /* ---- Z-Index ---- */
+  --z-base:     1;
+  --z-above:    10;
+  --z-sticky:   100;
+  --z-overlay:  200;
+  --z-drawer:   300;
+  --z-modal:    400;
+  --z-toast:    500;
+}

@@ -4,20 +4,16 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "thehoshi.to",
+        protocol: 'https',
+        hostname: 'picsum.photos',
       },
       {
-        protocol: "https",
-        hostname: "store.mediathehoshi.online",
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
       },
       {
-        protocol: "https",
-        hostname: "thehoshi.is",
-      },
-      {
-        protocol: "https",
-        hostname: "www.thehoshi.com",
+        protocol: 'https',
+        hostname: 'cdn.shopify.com',
       },
     ],
   },
